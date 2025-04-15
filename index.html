@@ -3,176 +3,198 @@
 
 <head>
   <meta charset="UTF-8">
-  <title>Handwriting Features vs Personality Traits</title>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/skeleton/2.0.4/skeleton.min.css">
+  <title>MBTI by Country</title>
+  <script src="https://d3js.org/d3.v7.min.js"></script>
+  <script src="https://d3js.org/topojson.v3.min.js"></script>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/skeleton/2.0.4/skeleton.min.css" rel="stylesheet" />
   <style>
     body {
-      font-family: sans-serif;
-      padding: 40px;
+      padding: 2rem;
     }
 
-    h1 {
-      text-align: center;
+    svg {
+      margin-top: 2rem;
     }
 
-    #controls {
-      margin-bottom: 30px;
-      text-align: center;
+    .bar {
+      fill: steelblue;
     }
 
-    #radarChart {
-      display: flex;
-      justify-content: center;
+    .axis text {
+      font-size: 12px;
     }
 
-    select {
-      min-width: 200px;
-      height: 120px;
+    .country {
+      stroke: #fff;
+      stroke-width: 0.5px;
     }
 
-    .legend {
-      text-align: center;
-      margin-top: 20px;
+    .tooltip {
+      position: absolute;
+      background: white;
+      border: 1px solid #ccc;
+      padding: 5px;
+      pointer-events: none;
+      font-size: 12px;
     }
   </style>
 </head>
 
 <body>
+  <h2>MBTI Distribution by Country</h2>
+  <label for="countrySelect">Select a country:</label>
+  <select id="countrySelect"></select>
 
-  <h1>Handwriting Feature Correlation with Personality</h1>
-  <div id="controls">
-    <label for="featureSelect">Choose Feature(s):</label><br>
-    <small>(Use Ctrl/Cmd + click for multiple)</small><br>
-    <select id="featureSelect" multiple></select>
-  </div>
+  <svg id="barchart" width="800" height="400"></svg>
+  <svg id="map" width="960" height="500"></svg>
 
-  <div id="radarChart"></div>
-  <div class="legend" id="legend"></div>
+  <div class="tooltip" style="opacity: 0;"></div>
+  <div id="sunburst"></div>
 
-  <script src="https://d3js.org/d3.v7.min.js"></script>
   <script>
-    d3.csv("results.csv").then(data => {
-      const features = [...new Set(data.map(d => d.Feature))];
-      const traits = ["Extraversion", "Agreeableness", "Openness", "Neuroticism", "Conscientiousness"];
-      const colorScale = d3.scaleOrdinal(d3.schemeCategory10);
-      const featureSelect = d3.select("#featureSelect");
+    const mbtiTypes = [
+      "ESTJ", "ESFJ", "INFP", "ENFP", "ESTP", "ISTJ", "INTP", "INFJ",
+      "ISFP", "ENTJ", "ESFP", "ENTP", "ENFJ", "INTJ", "ISFJ", "ISTP"
+    ];
 
-      featureSelect.selectAll("option")
-        .data(features)
+    const tooltip = d3.select(".tooltip");
+    const svgMap = d3.select("#map");
+    const svgBar = d3.select("#barchart");
+    const margin = { top: 20, right: 20, bottom: 50, left: 60 };
+    const width = +svgBar.attr("width") - margin.left - margin.right;
+    const height = +svgBar.attr("height") - margin.top - margin.bottom;
+    const chart = svgBar.append("g").attr("transform", `translate(${margin.left},${margin.top})`);
+
+    const y = d3.scaleLinear().range([height, 0]);
+    const x = d3.scaleBand().range([0, width]).padding(0.2);
+    const xAxis = chart.append("g").attr("transform", `translate(0, ${height})`);
+    const yAxis = chart.append("g");
+
+    // Load CSV and GeoJSON data
+    Promise.all([
+      d3.csv("countries.csv"),
+      d3.json("countries.geojson")
+    ]).then(([csvData, geoData]) => {
+      // Extract and normalize country names from CSV
+      const csvCountries = csvData.map(d => d.Country.trim().toLowerCase());
+
+      // Extract and normalize country names from GeoJSON
+      const geoCountries = geoData.features.map(d => d.properties.name.trim().toLowerCase());
+
+      // Identify countries in CSV but not in GeoJSON
+      const csvNotInGeo = csvCountries.filter(name => !geoCountries.includes(name));
+      console.log("Countries in CSV but not in GeoJSON:", csvNotInGeo);
+
+      // Identify countries in GeoJSON but not in CSV
+      const geoNotInCSV = geoCountries.filter(name => !csvCountries.includes(name));
+      console.log("Countries in GeoJSON but not in CSV:", geoNotInCSV);
+    }).catch(error => {
+      console.error("Error loading data:", error);
+    });
+
+    Promise.all([
+      d3.csv("countries.csv"),
+      d3.json("https://cdn.jsdelivr.net/npm/world-atlas@2/countries-110m.json")
+    ]).then(([data, world]) => {
+      const countries = data.map(d => d.Country);
+      const select = d3.select("#countrySelect");
+
+      select.selectAll("option")
+        .data(countries)
         .enter()
         .append("option")
-        .attr("value", d => d)
-        .text(d => d);
+        .text(d => d)
+        .attr("value", d => d);
 
-      // Initial draw
-      updateChart([features[0]]);
+      select.on("change", () => updateChart(select.property("value")));
+      updateChart(countries[0]);
 
-      featureSelect.on("change", function () {
-        const selected = Array.from(this.selectedOptions).map(opt => opt.value);
-        updateChart(selected);
+      const geoData = topojson.feature(world, world.objects.countries);
+      const projection = d3.geoNaturalEarth1().scale(160).translate([480, 250]);
+      const path = d3.geoPath().projection(projection);
+
+      const mbtiTotals = {};
+      data.forEach(row => {
+        let sum = 0;
+        mbtiTypes.forEach(type => {
+          sum += (+row[`${type}-A`] || 0) + (+row[`${type}-T`] || 0);
+        });
+        mbtiTotals[row.Country] = sum;
       });
 
-      function updateChart(selectedFeatures) {
-        const filtered = data.filter(d => selectedFeatures.includes(d.Feature));
+      const color = d3.scaleSequential(d3.interpolateBlues)
+        .domain([0, d3.max(Object.values(mbtiTotals))]);
 
-        // Reorganize to group by feature
-        const featureData = selectedFeatures.map(feature => {
-          const entry = traits.map(trait => {
-            const match = filtered.find(d => d.Feature === feature && d.Trait === trait);
-            return {
-              axis: trait,
-              value: match ? +match.Correlation : 0,
-              significant: match ? match.Significant === "True" : false
-            };
-          });
-          return { name: feature, values: entry };
+      svgMap.selectAll("path")
+        .data(geoData.features)
+        .join("path")
+        .attr("d", path)
+        .attr("class", "country")
+        .attr("fill", d => {
+          const name = d.properties.name;
+          return mbtiTotals[name] ? color(mbtiTotals[name]) : "#eee";
+        })
+        .on("mouseover", function (event, d) {
+          const name = d.properties.name;
+          if (mbtiTotals[name]) {
+            tooltip.transition().duration(200).style("opacity", .9);
+            tooltip.html(`<strong>${name}</strong><br>Total MBTI entries: ${mbtiTotals[name]}`)
+              .style("left", (event.pageX + 5) + "px")
+              .style("top", (event.pageY - 28) + "px");
+          }
+        })
+        .on("mouseout", function () {
+          tooltip.transition().duration(500).style("opacity", 0);
+        })
+        .on("click", function (event, d) {
+          const name = d.properties.name;
+          console.log("Country clicked:", name);
+          if (mbtiTotals[name]) {
+            select.property("value", name);
+            updateChart(name);
+          }
         });
 
-        drawRadar(featureData);
-        drawLegend(featureData);
-      }
+      function updateChart(countryName) {
+        const row = data.find(d => d.Country === countryName);
+        const values = {};
 
-      function drawRadar(datasets) {
-        d3.select("#radarChart").selectAll("*").remove();
-
-        const width = 500, height = 500;
-        const radius = Math.min(width, height) / 2 - 50;
-        const svg = d3.select("#radarChart")
-          .append("svg")
-          .attr("width", width)
-          .attr("height", height)
-          .append("g")
-          .attr("transform", `translate(${width / 2},${height / 2})`);
-
-        const angleSlice = 2 * Math.PI / traits.length;
-
-        // Axes
-        traits.forEach((trait, i) => {
-          const angle = i * angleSlice - Math.PI / 2;
-          svg.append("line")
-            .attr("x1", 0).attr("y1", 0)
-            .attr("x2", radius * Math.cos(angle))
-            .attr("y2", radius * Math.sin(angle))
-            .attr("stroke", "#ccc");
-
-          svg.append("text")
-            .attr("x", (radius + 20) * Math.cos(angle))
-            .attr("y", (radius + 20) * Math.sin(angle))
-            .attr("text-anchor", "middle")
-            .attr("alignment-baseline", "middle")
-            .text(trait);
+        mbtiTypes.forEach(type => {
+          const a = +row[`${type}-A`] || 0;
+          const t = +row[`${type}-T`] || 0;
+          values[type] = a + t;
         });
 
-        const line = d3.lineRadial()
-          .radius(d => radius * (d.value + 1) / 2)  // map -1 to 1 → 0 to radius
-          .angle((d, i) => i * angleSlice)
-          .curve(d3.curveLinearClosed);
+        const dataset = mbtiTypes.map(type => ({ type, value: values[type] }));
 
-        // Draw radar lines
-        datasets.forEach((dataset, i) => {
-          const color = colorScale(dataset.name);
+        x.domain(mbtiTypes);
+        y.domain([0, d3.max(dataset, d => d.value)]);
 
-          svg.append("path")
-            .datum(dataset.values)
-            .attr("d", line)
-            .attr("fill", "none")
-            .attr("stroke", color)
-            .attr("stroke-width", 2);
+        xAxis.transition().duration(500).call(d3.axisBottom(x));
+        yAxis.transition().duration(500).call(d3.axisLeft(y).ticks(5));
 
-          // Dots on each point
-          svg.selectAll(`.dot-${i}`)
-            .data(dataset.values)
-            .enter()
-            .append("circle")
-            .attr("cx", (d, j) => (radius * (d.value + 1) / 2) * Math.cos(j * angleSlice - Math.PI / 2))
-            .attr("cy", (d, j) => (radius * (d.value + 1) / 2) * Math.sin(j * angleSlice - Math.PI / 2))
-            .attr("r", 4)
-            .attr("fill", d => d.significant ? color : "#999")
-            .attr("stroke", d => d.significant ? "white" : "#666")
-            .attr("stroke-width", d => d.significant ? 1 : 1)
-            .attr("opacity", 0.8)
-            .style("stroke-dasharray", d => d.significant ? "0" : "2,2");
-        });
-      }
+        const bars = chart.selectAll(".bar").data(dataset, d => d.type);
 
-      function drawLegend(datasets) {
-        const legend = d3.select("#legend");
-        legend.html("");
+        bars.enter()
+          .append("rect")
+          .attr("class", "bar")
+          .attr("x", d => x(d.type))
+          .attr("width", x.bandwidth())
+          .attr("y", height)
+          .attr("height", 0)
+          .merge(bars)
+          .transition()
+          .duration(800)
+          .attr("x", d => x(d.type))
+          .attr("width", x.bandwidth())
+          .attr("y", d => y(d.value))
+          .attr("height", d => height - y(d.value));
 
-        datasets.forEach((ds, i) => {
-          legend.append("div")
-            .style("color", colorScale(ds.name))
-            .style("font-weight", "bold")
-            .style("margin-bottom", "5px")
-            .text(`⬤ ${ds.name}`);
-        });
-
-        legend.append("div").style("margin-top", "10px").html(`
-          <small><strong>Dot color:</strong> significant (p < 0.05) in color, otherwise gray.<br>
-          <strong>Ctrl/Cmd + Click</strong> to compare features.</small>
-        `);
+        bars.exit().remove();
       }
     });
+
+
   </script>
 </body>
 
