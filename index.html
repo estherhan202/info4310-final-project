@@ -5,7 +5,6 @@
   <meta charset="UTF-8">
   <title>MBTI by Country</title>
   <script src="https://d3js.org/d3.v7.min.js"></script>
-  <script src="https://d3js.org/topojson.v3.min.js"></script>
   <link href="https://cdnjs.cloudflare.com/ajax/libs/skeleton/2.0.4/skeleton.min.css" rel="stylesheet" />
   <style>
     body {
@@ -37,6 +36,12 @@
       pointer-events: none;
       font-size: 12px;
     }
+
+    .country.selected {
+      stroke: red;
+      fill: red;
+      stroke-width: 1.5px;
+    }
   </style>
 </head>
 
@@ -49,13 +54,15 @@
   <svg id="map" width="960" height="500"></svg>
 
   <div class="tooltip" style="opacity: 0;"></div>
-  <div id="sunburst"></div>
 
   <script>
     const mbtiTypes = [
       "ESTJ", "ESFJ", "INFP", "ENFP", "ESTP", "ISTJ", "INTP", "INFJ",
       "ISFP", "ENTJ", "ESFP", "ENTP", "ENFJ", "INTJ", "ISFJ", "ISTP"
     ];
+
+    let selectedCountry = null;
+
 
     const tooltip = d3.select(".tooltip");
     const svgMap = d3.select("#map");
@@ -70,33 +77,11 @@
     const xAxis = chart.append("g").attr("transform", `translate(0, ${height})`);
     const yAxis = chart.append("g");
 
-    // Load CSV and GeoJSON data
     Promise.all([
       d3.csv("countries.csv"),
       d3.json("countries.geojson")
-    ]).then(([csvData, geoData]) => {
-      // Extract and normalize country names from CSV
-      const csvCountries = csvData.map(d => d.Country.trim().toLowerCase());
-
-      // Extract and normalize country names from GeoJSON
-      const geoCountries = geoData.features.map(d => d.properties.name.trim().toLowerCase());
-
-      // Identify countries in CSV but not in GeoJSON
-      const csvNotInGeo = csvCountries.filter(name => !geoCountries.includes(name));
-      console.log("Countries in CSV but not in GeoJSON:", csvNotInGeo);
-
-      // Identify countries in GeoJSON but not in CSV
-      const geoNotInCSV = geoCountries.filter(name => !csvCountries.includes(name));
-      console.log("Countries in GeoJSON but not in CSV:", geoNotInCSV);
-    }).catch(error => {
-      console.error("Error loading data:", error);
-    });
-
-    Promise.all([
-      d3.csv("countries.csv"),
-      d3.json("https://cdn.jsdelivr.net/npm/world-atlas@2/countries-110m.json")
-    ]).then(([data, world]) => {
-      const countries = data.map(d => d.Country);
+    ]).then(([data, geoData]) => {
+      const countries = data.map(d => d.Country.trim());
       const select = d3.select("#countrySelect");
 
       select.selectAll("option")
@@ -106,10 +91,15 @@
         .text(d => d)
         .attr("value", d => d);
 
-      select.on("change", () => updateChart(select.property("value")));
+      select.on("change", () => {
+        const name = select.property("value");
+        selectedCountry = name;
+        updateChart(name);
+        updateMapHighlight();
+      });
+
       updateChart(countries[0]);
 
-      const geoData = topojson.feature(world, world.objects.countries);
       const projection = d3.geoNaturalEarth1().scale(160).translate([480, 250]);
       const path = d3.geoPath().projection(projection);
 
@@ -119,7 +109,7 @@
         mbtiTypes.forEach(type => {
           sum += (+row[`${type}-A`] || 0) + (+row[`${type}-T`] || 0);
         });
-        mbtiTotals[row.Country] = sum;
+        mbtiTotals[row.Country.trim()] = sum;
       });
 
       const color = d3.scaleSequential(d3.interpolateBlues)
@@ -131,11 +121,11 @@
         .attr("d", path)
         .attr("class", "country")
         .attr("fill", d => {
-          const name = d.properties.name;
+          const name = d.properties.name.trim();
           return mbtiTotals[name] ? color(mbtiTotals[name]) : "#eee";
         })
         .on("mouseover", function (event, d) {
-          const name = d.properties.name;
+          const name = d.properties.name.trim();
           if (mbtiTotals[name]) {
             tooltip.transition().duration(200).style("opacity", .9);
             tooltip.html(`<strong>${name}</strong><br>Total MBTI entries: ${mbtiTotals[name]}`)
@@ -147,18 +137,27 @@
           tooltip.transition().duration(500).style("opacity", 0);
         })
         .on("click", function (event, d) {
-          const name = d.properties.name;
-          console.log("Country clicked:", name);
+          const name = d.properties.name.trim();
           if (mbtiTotals[name]) {
             select.property("value", name);
+            selectedCountry = name;
             updateChart(name);
+            updateMapHighlight();
           }
         });
 
-      function updateChart(countryName) {
-        const row = data.find(d => d.Country === countryName);
-        const values = {};
+      function updateMapHighlight() {
+        svgMap.selectAll("path")
+          .classed("selected", d => d.properties.name.trim() === selectedCountry);
+      }
 
+
+
+      function updateChart(countryName) {
+        const row = data.find(d => d.Country.trim() === countryName);
+        if (!row) return;
+
+        const values = {};
         mbtiTypes.forEach(type => {
           const a = +row[`${type}-A`] || 0;
           const t = +row[`${type}-T`] || 0;
@@ -192,9 +191,9 @@
 
         bars.exit().remove();
       }
+    }).catch(error => {
+      console.error("Error loading data:", error);
     });
-
-
   </script>
 </body>
 
