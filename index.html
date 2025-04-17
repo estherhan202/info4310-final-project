@@ -6,107 +6,182 @@
   <title>MBTI by Country</title>
   <script src="https://d3js.org/d3.v7.min.js"></script>
   <link href="https://cdnjs.cloudflare.com/ajax/libs/skeleton/2.0.4/skeleton.min.css" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;700&display=swap" rel="stylesheet">
   <style>
     body {
       padding: 2rem;
+      font-family: 'Nunito', sans-serif;
+      background: #f9fbfd;
+      color: #333;
     }
 
-    svg {
-      margin-top: 2rem;
+    h1,
+    h2,
+    h3,
+    h4,
+    h5 {
+      color: #3b3b3b;
+      font-weight: 700;
     }
 
-    .bar {
-      fill: steelblue;
+    section {
+      margin-bottom: 60px;
     }
 
-    .axis text {
-      font-size: 12px;
+    button {
+      background-color: #6dc2b1;
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 10px;
+      cursor: pointer;
+      font-size: 14px;
+      transition: background-color 0.3s ease;
     }
 
-    .country {
-      stroke: #fff;
-      stroke-width: 0.5px;
+    button:hover {
+      background-color: #4bb4a3;
+    }
+
+    .card {
+      background: #ffffff;
+      border-radius: 16px;
+      padding: 20px;
+      box-shadow: 0px 4px 16px rgba(0, 0, 0, 0.05);
+      border: none;
+    }
+
+    .team-tag {
+      padding: 10px 14px;
+      background: #dfeffc;
+      border-radius: 10px;
+      font-weight: bold;
+      color: #3b5998;
+      border: none;
+    }
+
+    #slider-container label {
+      font-weight: bold;
+      margin-top: 20px;
+      display: block;
+      color: #3a3a3a;
+    }
+
+    input[type=range] {
+      -webkit-appearance: none;
+      width: 100%;
+      height: 12px;
+      border-radius: 6px;
+      background: linear-gradient(to right, #6dc2b1, #f6d365);
+      outline: none;
+    }
+
+    input[type=range]::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      appearance: none;
+      width: 22px;
+      height: 22px;
+      background: #fff;
+      border: 2px solid #6dc2b1;
+      border-radius: 50%;
+      cursor: pointer;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.15);
+    }
+
+    #builder {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 40px;
+      align-items: flex-start;
+    }
+
+    #builder .left-column,
+    #builder .right-column {
+      flex: 1;
+      min-width: 320px;
+    }
+
+    #radar-chart svg {
+      background-color: #ffffff;
+      border-radius: 16px;
+      box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.05);
+      margin-top: 20px;
+    }
+
+    #mbti-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
     }
 
     .tooltip {
       position: absolute;
       background: white;
       border: 1px solid #ccc;
-      padding: 5px;
+      padding: 6px 10px;
       pointer-events: none;
       font-size: 12px;
+      border-radius: 8px;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
     }
 
     .country.selected {
-      stroke: red;
-      fill: red;
-      stroke-width: 1.5px;
+      stroke: #f67280;
+      stroke-width: 2px;
+      fill: #f8c291;
     }
 
-    #slider-container label {
-      display: block;
-      font-weight: bold;
-      margin-bottom: 4px;
+    .country {
+      fill: #d0e8df;
+      transition: fill 0.3s ease;
     }
 
-    #slider-container input[type=range] {
-      width: 100%;
+    .country:hover {
+      fill: #aadbd0;
     }
 
-    #builder {
-      display: flex;
-      gap: 40px;
-      align-items: stretch;
+    .bar {
+      fill: #92d5c6;
+      transition: fill 0.3s ease;
     }
 
-    #builder .left-column {
-      flex: 1;
-      min-width: 350px;
-      max-width: 500px;
-      display: flex;
-      flex-direction: column;
+    .bar:hover {
+      fill: #6dc2b1;
     }
 
-    #builder .right-column {
-      flex: 1;
-      min-width: 300px;
-      display: flex;
-      flex-direction: column;
-      gap: 20px;
-    }
-
-    #radar-chart {
-      width: 100%;
-      height: 400px;
-      margin-top: 30px;
-      flex-grow: 1;
-    }
-
-    #mbti-grid {
-      flex-grow: 1;
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 16px;
-      height: 100%;
-    }
-
-    .card {
-      background: #fdfdfd;
-      border: 1px solid #ddd;
-      border-radius: 8px;
-      padding: 16px;
-    }
-
-    .team-tag {
+    #match-types select,
+    #match-types button {
       padding: 8px 12px;
-      background: #f0f8ff;
-      border: 1px solid #999;
+      font-size: 14px;
+      border-radius: 8px;
+      border: 1px solid #ccc;
+      background: white;
+    }
+
+    #team-builder #slots {
+      gap: 16px;
+      margin-top: 20px;
+    }
+
+    #team-builder .card {
+      font-size: 14px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background: #eef6f6;
+      border: 2px dashed #9fd9d1;
+      color: #3b5998;
+      border-radius: 10px;
+    }
+
+    select {
       border-radius: 6px;
-      cursor: grab;
-      font-weight: bold;
+      padding: 6px;
+      border: 1px solid #ccc;
     }
   </style>
 </head>
+
 
 <body>
   <section id="intro" style="max-width: 800px; margin: 0 auto; text-align: center; padding: 40px;">
@@ -243,7 +318,6 @@
     const x = d3.scaleBand().range([0, width]).padding(0.2);
     const xAxis = chart.append("g").attr("transform", `translate(0, ${height})`);
     const yAxis = chart.append("g");
-
     const loadData = async () => {
       const countryData = await d3.csv("countries.csv");
       const geoData = await d3.json("countries.geojson");
@@ -270,32 +344,26 @@
       const projection = d3.geoNaturalEarth1().scale(160).translate([480, 250]);
       const path = d3.geoPath().projection(projection);
 
-      const mbtiTotals = {};
-      countryData.forEach(row => {
-        let sum = 0;
-        mbtiTypes.forEach(type => {
-          sum += (+row[`${type}-A`] || 0) + (+row[`${type}-T`] || 0);
-        });
-        mbtiTotals[row.Country.trim()] = sum;
-      });
-
-      const color = d3.scaleSequential(d3.interpolateBlues)
-        .domain([0, d3.max(Object.values(mbtiTotals))]);
-
       svgMap.selectAll("path")
         .data(geoData.features)
         .join("path")
         .attr("d", path)
         .attr("class", "country")
-        .attr("fill", d => {
-          const name = d.properties.name.trim();
-          return mbtiTotals[name] ? color(mbtiTotals[name]) : "#eee";
-        })
         .on("mouseover", function (event, d) {
           const name = d.properties.name.trim();
-          if (mbtiTotals[name]) {
+          const row = countryData.find(c => c.Country.trim() === name);
+          if (row) {
+            let max = 0;
+            let topType = "";
+            mbtiTypes.forEach(type => {
+              const total = (+row[`${type}-A`] || 0) + (+row[`${type}-T`] || 0);
+              if (total > max) {
+                max = total;
+                topType = type;
+              }
+            });
             tooltip.transition().duration(200).style("opacity", .9);
-            tooltip.html(`<strong>${name}</strong><br>Total MBTI entries: ${mbtiTotals[name]}`)
+            tooltip.html(`<strong>${name}</strong><br>Most common type: ${topType}`)
               .style("left", (event.pageX + 5) + "px")
               .style("top", (event.pageY - 28) + "px");
           }
@@ -305,12 +373,10 @@
         })
         .on("click", function (event, d) {
           const name = d.properties.name.trim();
-          if (mbtiTotals[name]) {
-            select.property("value", name);
-            selectedCountry = name;
-            updateChart(name);
-            updateMapHighlight();
-          }
+          select.property("value", name);
+          selectedCountry = name;
+          updateChart(name);
+          updateMapHighlight();
         });
 
       function updateMapHighlight() {
@@ -357,6 +423,7 @@
         bars.exit().remove();
       }
     };
+
     loadData();
     const sliders = {
       ei: document.getElementById("ei"),
