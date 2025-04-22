@@ -638,11 +638,24 @@
 
     <div>
       <h2>MBTI Distribution by Country</h2>
+      <p>
+        Discover how MBTI types are distributed around the world and how they
+        compare across countries. Click on a country to explore its unique MBTI
+        profile—and see where you might fit in!
+      </p>
       <label for="countrySelect">Select a country:</label>
       <select id="countrySelect"></select>
 
-      <svg id="map" width="960" height="500"></svg>
-      <svg id="barchart" width="800" height="400"></svg>
+      <div style="display: flex; align-items: flex-start">
+        <div style="flex: 1; text-align: center">
+          <h3>MBTI Type Distribution</h3>
+          <svg id="barchart" width="520" height="400"></svg>
+        </div>
+        <div style="flex: 1; text-align: center">
+          <h3>World Map</h3>
+          <svg id="map" width="900" height="500"></svg>
+        </div>
+      </div>
       <div class="tooltip" style="opacity: 0"></div>
     </div>
 
