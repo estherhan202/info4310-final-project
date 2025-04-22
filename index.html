@@ -42,16 +42,16 @@
         text-align: center;
       }
 
-    button {
-      background-color: #6dc2b1;
-      color: white;
-      border: none;
-      border-radius: 10px;
-      cursor: pointer;
-      font-size: 14px;
-      transition: background-color 0.3s ease;
-      height: 50px
-    }
+      button {
+        background-color: #6dc2b1;
+        color: white;
+        border: none;
+        border-radius: 10px;
+        cursor: pointer;
+        font-size: 14px;
+        transition: background-color 0.3s ease;
+        height: 50px;
+      }
 
       button:hover {
         background-color: #4bb4a3;
@@ -194,53 +194,75 @@
         border: 1px solid #ccc;
       }
 
-    #quiz-container {
-      /* max-width: 800px; */
-      width: 90%;
-      height: 75vh;
-      margin: auto;
-      background: white;
-      padding: 60px 40px;
-      border-radius: 16px;
-      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
-      text-align: center;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-    }
+      #quiz-container {
+        /* max-width: 800px; */
+        width: 95%;
+        height: 75vh;
+        margin: auto;
+        background: white;
+        padding: 60px 40px;
+        border-radius: 16px;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        text-align: center;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+      }
 
-    #mbti-test {
-      padding: 50px;
-    }
+      #mbti-test {
+        padding: 50px;
+      }
 
+      .question {
+        font-size: 1.6em;
+        margin-bottom: 40px;
+        font-weight: 600;
+        color: #333;
+      }
 
-    .question {
-      font-size: 1.6em;
-      margin-bottom: 40px;
-      font-weight: 600;
-      color: #333;
-    }
+      #question-text {
+        min-height: 70px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 0 10px;
+        text-align: center;
+        height: 80px;
+      }
 
-    .options {
-      display: flex;
-      flex-direction: row;
-      gap: 15px;
-      align-items: center;
-    }
+      .options {
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
+        gap: 15px;
+        white-space: nowrap;
+        overflow-x: auto;
+      }
 
-
-    .option {
-      width: 150px;
-      /* padding: 14px;
-      border-radius: 12px;
-      background-color: #e6eff5;
-      cursor: pointer; */
-      transition: background-color 0.2s;
-      font-size: 12pt;
-    }
-
-      .option:hover {
-        background-color: #b0bec5;
+      .option {
+        flex: 1 1 140px;
+        min-width: 140px;
+        max-width: 180px;
+        padding: 14px 16px;
+        border-radius: 12px;
+        background-color: #e6eff5;
+        border: 2px solid transparent;
+        font-size: 1em;
+        text-align: center;
+        cursor: pointer;
+        transition: all 0.2s ease;
+        box-sizing: border-box;
+        box-sizing: border-box;
+        display: flex; /* NEW */
+        align-items: center; /* NEW */
+        justify-content: center; /* NEW */
+        height: auto; /* FIXED: allows dynamic height */
+        word-wrap: break-word; /* FIXED: breaks long words */
+        white-space: normal; /* FIXED: allows wrapping */
+        overflow-wrap: break-word;
+      }
+      r .option:hover {
+        background-color: #c5deeb;
       }
 
       .hidden {
@@ -413,38 +435,42 @@
     </style>
   </head>
 
-<body>
-  <section id="intro">
-    <div class="top-intro">
-      <h1>🔍 Discover Yourself in the Data</h1>
-      <p>Explore how your unique personality type fits into the global MBTI landscape — from traits and careers to
-        countries and compatibility.</p>
-      <div style="margin-top: 20px;">
-        <button onclick="document.getElementById('mbti-test').scrollIntoView({behavior: 'smooth'})">Take MBTI Quiz
-          ↓</button>
-        <button onclick="document.getElementById('builder').scrollIntoView({behavior: 'smooth'})">Explore MBTIs
-          ↓</button>
+  <body>
+    <section id="intro">
+      <div class="top-intro">
+        <h1>🔍 Discover Yourself in the Data</h1>
+        <p>
+          Explore how your unique personality type fits into the global MBTI
+          landscape — from traits and careers to countries and compatibility.
+        </p>
+        <div style="margin-top: 20px">
+          <button
+            onclick="document.getElementById('mbti-test').scrollIntoView({behavior: 'smooth'})"
+          >
+            Take MBTI Quiz ↓
+          </button>
+          <button
+            onclick="document.getElementById('builder').scrollIntoView({behavior: 'smooth'})"
+          >
+            Explore MBTIs ↓
+          </button>
+        </div>
       </div>
-    </div>
-  </section>
+    </section>
 
-
-  <section id="mbti-test">
-    <div id="quiz-container">
-      <div id="question-progress" style="text-align: right; font-weight: 600; color: #999;"></div>
-      <div id="question-container">
-        <div class="question" id="question-text"></div>
-        <div class="options" id="options"></div>
+    <section id="mbti-test">
+      <div id="quiz-container">
+        <div
+          id="question-progress"
+          style="text-align: right; font-weight: 600; color: #999"
+        ></div>
+        <div id="question-container">
+          <div class="question" id="question-text"></div>
+          <div class="options" id="options"></div>
+        </div>
+        <div id="result" class="result hidden"></div>
       </div>
-      <div id="result" class="result hidden"></div>
-    </div>
-
-    </div>
-
-
-  </section>
-
-
+    </section>
 
     <section id="builder">
       <div class="left-column">
@@ -606,119 +632,137 @@
       <label for="countrySelect">Select a country:</label>
       <select id="countrySelect"></select>
 
-    <svg id="map" width="960" height="500"></svg>
-    <svg id="barchart" width="800" height="400"></svg>
-    <div class="tooltip" style="opacity: 0"></div>
-  </div>
+      <svg id="map" width="960" height="500"></svg>
+      <svg id="barchart" width="800" height="400"></svg>
+      <div class="tooltip" style="opacity: 0"></div>
+    </div>
 
+    <script>
+      // MBTI TEST - Section 1
+      const testValues = {
+        "-3": "Strongly Disagree",
+        "-2": "Disagree",
+        "-1": "Slightly Disagree",
+        0: "Neutral",
+        1: "Slightly Agree",
+        2: "Agree",
+        3: "Strongly Agree",
+      };
 
-  <script>
-    // MBTI TEST - Section 1
-    const testValues = {
-      "-3": "Strongly Disagree",
-      "-2": "Disagree",
-      "-1": "Slightly Disagree",
-      "0": "Neutral",
-      "1": "Slightly Agree",
-      "2": "Agree",
-      "3": "Strongly Agree"
-    };
-
-    const scaleColors = {
-      "-3": "#3eb489",
-      "-2": "#6dc2b1",
-      "-1": "#9ed3c7",
-      "0": "#ccc",
-      "1": "#bba9d6",
-      "2": "#a77bc2",
-      "3": "#894fb9"
-    };
+      const scaleColors = {
+        "-3": "#3eb489",
+        "-2": "#6dc2b1",
+        "-1": "#9ed3c7",
+        0: "#ccc",
+        1: "#bba9d6",
+        2: "#a77bc2",
+        3: "#894fb9",
+      };
 
       let questions = [];
       let currentQuestionIndex = 0;
       let responses = [];
 
-    const dimensionMap = {
-      EI: [0, 1, 2, 3, 4],
-      SN: [5, 6, 7, 8, 9],
-      TF: [10, 11, 12, 13, 14],
-      JP: [15, 16, 17, 18, 19]
-    };
+      const dimensionMap = {
+        EI: [0, 1, 2, 3, 4],
+        SN: [5, 6, 7, 8, 9],
+        TF: [10, 11, 12, 13, 14],
+        JP: [15, 16, 17, 18, 19],
+      };
 
-    d3.csv("16P.csv").then(data => {
-      const firstRow = data[0];
-      const allKeys = Object.keys(firstRow);
+      d3.csv("16P.csv").then((data) => {
+        const firstRow = data[0];
+        const allKeys = Object.keys(firstRow);
 
-      const selectedIndexes = [
-        1, 6, 11, 16, 31,       // E/I
-        2, 12, 17, 30, 32,      // S/N
-        3, 9, 19, 23, 50,       // T/F
-        4, 7, 10, 14, 25,       // J/P
-      ];
+        const selectedIndexes = [
+          1,
+          6,
+          11,
+          16,
+          31, // E/I
+          2,
+          12,
+          17,
+          30,
+          32, // S/N
+          3,
+          9,
+          19,
+          23,
+          50, // T/F
+          4,
+          7,
+          10,
+          14,
+          25, // J/P
+        ];
 
-      questions = selectedIndexes.map(i => allKeys[i]);
-      showQuestion();
+        questions = selectedIndexes.map((i) => allKeys[i]);
+        showQuestion();
       });
 
-
-
-    function showQuestion() {
-      d3.select("#question-progress").text(`${currentQuestionIndex + 1} / ${questions.length}`);
-      d3.select("#question-text").text(questions[currentQuestionIndex]);
+      function showQuestion() {
+        d3.select("#question-progress").text(
+          `${currentQuestionIndex + 1} / ${questions.length}`
+        );
+        d3.select("#question-text").text(questions[currentQuestionIndex]);
 
         const optionsDiv = d3.select("#options");
         optionsDiv.html("");
 
-      d3.range(-3, 4).forEach(val => {
-        optionsDiv.append("div")
-          .attr("class", "option")
-          .style("color", scaleColors[val])
-          .style("border", `2px solid ${scaleColors[val]}`)
-          .style("border-radius", "12px")
-          .style("background-color", "transparent")
-          .style("padding", "10px 16px")
-          .style("margin", "8px")
-          .style("cursor", "pointer")
-          .text(testValues[val])
-          .on("mouseover", function () {
-            d3.select(this).style("background-color", scaleColors[val]).style("color", "#fff");
-          })
-          .on("mouseout", function () {
-            d3.select(this).style("background-color", "transparent").style("color", scaleColors[val]);
-          })
-          .on("click", () => {
-            responses.push(+val);
-            currentQuestionIndex++;
-            if (currentQuestionIndex < questions.length) {
-              showQuestion();
-            } else {
-              showResult();
-            }
-          });
-      });
+        d3.range(-3, 4).forEach((val) => {
+          optionsDiv
+            .append("div")
+            .attr("class", "option")
+            .style("color", scaleColors[val])
+            .style("border", `2px solid ${scaleColors[val]}`)
+            .style("border-radius", "12px")
+            .style("background-color", "transparent")
+            .style("padding", "10px 16px")
+            .style("margin", "8px")
+            .style("cursor", "pointer")
+            .text(testValues[val])
+            .on("mouseover", function () {
+              d3.select(this)
+                .style("background-color", scaleColors[val])
+                .style("color", "#fff");
+            })
+            .on("mouseout", function () {
+              d3.select(this)
+                .style("background-color", "transparent")
+                .style("color", scaleColors[val]);
+            })
+            .on("click", () => {
+              responses.push(+val);
+              currentQuestionIndex++;
+              if (currentQuestionIndex < questions.length) {
+                showQuestion();
+              } else {
+                showResult();
+              }
+            });
+        });
+      }
 
-    }
+      function showResult() {
+        d3.select("#question-container").classed("hidden", true);
+        d3.select("#question-progress").classed("hidden", true); // ← hide progress
+        d3.select("#result").classed("hidden", false);
 
-    function showResult() {
-      d3.select("#question-container").classed("hidden", true);
-      d3.select("#question-progress").classed("hidden", true); // ← hide progress
-      d3.select("#result").classed("hidden", false);
-
-      const type = calculateMBTI();
-      d3.select("#result").text(`Your MBTI type is: ${type}`);
-    }
-
+        const type = calculateMBTI();
+        d3.select("#result").text(`Your MBTI type is: ${type}`);
+      }
 
       function calculateMBTI() {
         let type = "";
 
-      const scoreDimension = (indexes, positiveValue, negativeValue) => {
-        let score = 0;
-        indexes.forEach(i => {
-          score += responses[i];
-        });
-        return score >= 0 ? positiveValue : negativeValue;
-      };
+        const scoreDimension = (indexes, positiveValue, negativeValue) => {
+          let score = 0;
+          indexes.forEach((i) => {
+            score += responses[i];
+          });
+          return score >= 0 ? positiveValue : negativeValue;
+        };
 
         type += scoreDimension(dimensionMap.EI, "E", "I");
         type += scoreDimension(dimensionMap.SN, "N", "S");
@@ -728,12 +772,25 @@
         return type;
       }
 
-
-    //country
-    const mbtiTypes = [
-      "ESTJ", "ESFJ", "INFP", "ENFP", "ESTP", "ISTJ", "INTP", "INFJ",
-      "ISFP", "ENTJ", "ESFP", "ENTP", "ENFJ", "INTJ", "ISFJ", "ISTP"
-    ];
+      //country
+      const mbtiTypes = [
+        "ESTJ",
+        "ESFJ",
+        "INFP",
+        "ENFP",
+        "ESTP",
+        "ISTJ",
+        "INTP",
+        "INFJ",
+        "ISFP",
+        "ENTJ",
+        "ESFP",
+        "ENTP",
+        "ENFJ",
+        "INTJ",
+        "ISFJ",
+        "ISTP",
+      ];
 
       let selectedCountry = null;
 
@@ -876,15 +933,15 @@
         }
       };
 
-    loadData();
+      loadData();
 
-    //build mbti type
-    const sliders = {
-      ei: document.getElementById("ei"),
-      sn: document.getElementById("sn"),
-      tf: document.getElementById("tf"),
-      jp: document.getElementById("jp"),
-    };
+      //build mbti type
+      const sliders = {
+        ei: document.getElementById("ei"),
+        sn: document.getElementById("sn"),
+        tf: document.getElementById("tf"),
+        jp: document.getElementById("jp"),
+      };
 
       const sliderVals = {
         ei: document.getElementById("ei-val"),
@@ -1028,26 +1085,25 @@
 
       // https://appliednetsci.springeropen.com/articles/10.1007/s41109-019-0117-4/tables/4
 
-
-    // team builder
-    const mbtiRoles = {
-      ESTP: "Doer",
-      ISFP: "Mediator",
-      ISTP: "Problem Solver",
-      ESFP: "Entertainer",
-      ESTJ: "Organizer",
-      ESFJ: "Supporter",
-      ISTJ: "Inspector",
-      ISFJ: "Protector",
-      ENFJ: "Coach",
-      INFJ: "Advisor",
-      ENFP: "Campaigner",
-      INFP: "Idealist",
-      ENTJ: "Commander",
-      INTJ: "Strategist",
-      ENTP: "Visionary",
-      INTP: "Thinker",
-    };
+      // team builder
+      const mbtiRoles = {
+        ESTP: "Doer",
+        ISFP: "Mediator",
+        ISTP: "Problem Solver",
+        ESFP: "Entertainer",
+        ESTJ: "Organizer",
+        ESFJ: "Supporter",
+        ISTJ: "Inspector",
+        ISFJ: "Protector",
+        ENFJ: "Coach",
+        INFJ: "Advisor",
+        ENFP: "Campaigner",
+        INFP: "Idealist",
+        ENTJ: "Commander",
+        INTJ: "Strategist",
+        ENTP: "Visionary",
+        INTP: "Thinker",
+      };
 
       const teamSize = 5;
       const team = new Array(teamSize).fill(null);
