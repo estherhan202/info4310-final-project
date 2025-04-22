@@ -28,11 +28,19 @@
       margin-bottom: 60px;
     }
 
+    #intro {
+      height: 100vh;
+      /* Full screen height */
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+    }
+
     button {
       background-color: #6dc2b1;
       color: white;
       border: none;
-      padding: 10px 20px;
       border-radius: 10px;
       cursor: pointer;
       font-size: 14px;
@@ -184,13 +192,16 @@
 
 
 <body>
-  <section id="intro" style="max-width: 800px; margin: 0 auto; text-align: center; padding: 40px;">
-    <h1>🔍 Discover Yourself in the Data</h1>
-    <p>Explore how your unique personality type fits into the global MBTI landscape — from traits and careers to
-      countries and compatibility.</p>
-    <div style="margin-top: 20px;">
-      <button onclick="document.getElementById('builder').scrollIntoView({behavior: 'smooth'})">Start Matching Your Type
-        ↓</button>
+  <section id="intro">
+    <div class="top-intro">
+      <h1>🔍 Discover Yourself in the Data</h1>
+      <p>Explore how your unique personality type fits into the global MBTI landscape — from traits and careers to
+        countries and compatibility.</p>
+      <div style="margin-top: 20px;">
+        <button onclick="document.getElementById('builder').scrollIntoView({behavior: 'smooth'})">Start Matching Your
+          Type
+          ↓</button>
+      </div>
     </div>
   </section>
 
@@ -214,7 +225,7 @@
           <input type="range" id="tf" min="0" max="1" step="0.01" value="0.5">
         </div>
         <div class="trait">
-          <label for="jp">Judging vs Perceiving (J/P): <span id="jp-val">50%</span></label>
+          <label for="jp">Judging vs Prospecting (J/P): <span id="jp-val">50%</span></label>
           <input type="range" id="jp" min="0" max="1" step="0.01" value="0.5">
         </div>
       </div>
