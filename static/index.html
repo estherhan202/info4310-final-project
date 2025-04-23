@@ -154,17 +154,19 @@
       compare across countries. Click on a country to explore its unique MBTI
       profile—and see where you might fit in!
     </p>
-    <label for="countrySelect">Select a country:</label>
-    <select id="countrySelect"></select>
+
 
     <div id="country-div">
+      <div style="display:flex; flex-direction: column; justify-content: center;">
+        <label for="countrySelect">Select or click a country on the map:</label>
+        <select id="countrySelect"></select>
+        <div class="country-div-2">
+          <svg id="map" width="1000" height="500"></svg>
+        </div>
+      </div>
       <div class="country-div-2">
         <h3>MBTI Type Distribution</h3>
         <svg id="barchart" width="520" height="400"></svg>
-      </div>
-      <div class="country-div-2">
-        <h3>World Map</h3>
-        <svg id="map" width="900" height="500"></svg>
       </div>
     </div>
     <div class="tooltip"></div>
