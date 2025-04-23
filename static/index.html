@@ -465,6 +465,130 @@
         width: 100%;
         height: 8px;
       }
+      #team-circles-container {
+        position: relative;
+        width: 360px;
+        height: 360px;
+        margin: 40px auto;
+      }
+
+      .circle-slot {
+        width: 80px;
+        height: 80px;
+        background: #eef6f6;
+        border: 2px dashed #9fd9d1;
+        border-radius: 50%;
+        position: absolute;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        font-weight: bold;
+        cursor: pointer;
+        text-align: center;
+        font-size: 14px;
+      }
+
+      #slot-0 {
+        top: 50%;
+        left: 100%;
+        transform: translate(-50%, -50%);
+      }
+
+      #slot-1 {
+        top: 97.6%;
+        left: 65.4%;
+        transform: translate(-50%, -50%);
+      }
+
+      #slot-2 {
+        top: 79%;
+        left: 9.5%;
+        transform: translate(-50%, -50%);
+      }
+
+      #slot-3 {
+        top: 21%;
+        left: 9.5%;
+        transform: translate(-50%, -50%);
+      }
+
+      #slot-4 {
+        top: 2.4%;
+        left: 65.4%;
+        transform: translate(-50%, -50%);
+      }
+
+      #center-score {
+        border-radius: 50%;
+        background: #6dc2b1;
+        color: white;
+        font-weight: bold;
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        padding: 10px;
+        text-align: center;
+        width: 160px; /* increased from 140px */
+        height: 160px;
+        padding: 20px; /* increased from 10px */
+        font-size: 25px;
+        line-height: 1.4;
+      }
+      .circle-content-wrapper {
+        position: relative;
+        width: 100%;
+        height: 100%;
+      }
+
+      .circle-label {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        font-weight: bold;
+        font-size: 18px;
+      }
+
+      .circle-remove-btn {
+        position: absolute;
+        top: -5px;
+        right: -15px;
+        border: none;
+        background: transparent;
+        cursor: pointer;
+        font-size: 7px;
+        outline: none;
+      }
+
+      button.circle-remove-btn {
+        background-color: transparent;
+      }
+      #team-builder-wrapper {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+        gap: 40px;
+        width: 100%;
+        flex-wrap: wrap;
+      }
+
+      #team-circles-container {
+        max-width: 600px;
+      }
+
+      #mbti-pool {
+        width: 50%;
+      }
+
+      #mbti-types {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(80px, 1fr));
+        gap: 12px;
+      }
     </style>
   </head>
 
@@ -630,28 +754,28 @@
     <section id="build-team" style="padding: 40px; margin-top: 60px">
       <h2>🛠 Build a Team</h2>
       <p>
-        Drag MBTI types into team slots to see team dynamics and suggestions.
+        Drag MBTI types into the circles below. Team compatibility will show in
+        the center.
       </p>
 
-      <div
-        id="team-builder"
-        style="display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 20px"
-      >
-        <div
-          id="slots"
-          style="display: flex; flex-wrap: wrap; gap: 10px; flex: 1"
-        ></div>
+      <div id="team-builder-wrapper">
+        <div id="team-circles-container">
+          <div class="circle-slot" id="slot-0">+</div>
+          <div class="circle-slot" id="slot-1">+</div>
+          <div class="circle-slot" id="slot-2">+</div>
+          <div class="circle-slot" id="slot-3">+</div>
+          <div class="circle-slot" id="slot-4">+</div>
+          <div id="center-score">Score</div>
+        </div>
 
-        <div id="mbti-pool" style="flex: 1; min-width: 200px">
-          <h4>Available Types</h4>
+        <div id="mbti-pool" style="margin-top: 30px">
+          <h4>Available MBTI Types</h4>
           <div
-            style="display: flex; flex-wrap: wrap; gap: 8px"
             id="mbti-types"
+            style="display: flex; flex-wrap: wrap; gap: 10px"
           ></div>
         </div>
       </div>
-
-      <div id="team-analysis" class="card" style="max-width: 600px"></div>
     </section>
 
     <div>
@@ -1161,14 +1285,13 @@
         });
 
         initTeamBuilder();
-        populateMatchDropdowns();
+        // populateMatchDropdowns();
       });
 
       function initTeamBuilder() {
         const pool = d3.select("#mbti-types");
-        const slots = d3.select("#slots");
+        const slots = [0, 1, 2, 3, 4];
 
-        // Create MBTI draggable buttons
         Object.keys(mbtiRoles).forEach((type) => {
           pool
             .append("div")
@@ -1183,103 +1306,72 @@
             });
         });
 
-        for (let i = 0; i < teamSize; i++) {
-          const slot = slots
-            .append("div")
-            .attr("class", "card")
-            .attr("id", `slot-${i}`)
-            .style("width", "90px")
-            .style("height", "50px")
-            .style("display", "flex")
-            .style("align-items", "center")
-            .style("justify-content", "space-between")
-            .style("padding", "0 8px")
-            .style("background", "#f9f9f9")
-            .style("border", "2px dashed #ccc")
-            .on("dragover", (event) => event.preventDefault())
-            .on("drop", (event) => {
-              event.preventDefault();
-              const type = event.dataTransfer.getData("text/plain");
-              team[i] = type;
-              updateSlot(i);
-              analyzeTeam();
-            });
-
-          updateSlot(i); // initialize empty
-        }
+        slots.forEach((i) => {
+          const el = document.getElementById(`slot-${i}`);
+          el.addEventListener("dragover", (e) => e.preventDefault());
+          el.addEventListener("drop", (e) => {
+            e.preventDefault();
+            const type = e.dataTransfer.getData("text/plain");
+            team[i] = type;
+            renderSlot(i);
+            analyzeTeam();
+          });
+        });
       }
 
-      function updateSlot(i) {
-        const slot = d3.select(`#slot-${i}`);
-        slot.html(""); // clear previous
+      function renderSlot(i) {
+        const el = document.getElementById(`slot-${i}`);
+        el.innerHTML = ""; // clear previous content
 
         if (team[i]) {
-          slot.append("span").text(team[i]);
+          const wrapper = document.createElement("div");
+          wrapper.className = "circle-content-wrapper";
 
-          slot
-            .append("button")
-            .text("❌")
-            .style("margin-left", "8px")
-            .style("border", "none")
-            .style("background", "transparent")
-            .style("cursor", "pointer")
-            .on("click", () => {
-              team[i] = null;
-              updateSlot(i);
-              analyzeTeam();
-            });
+          const label = document.createElement("span");
+          label.className = "circle-label";
+          label.textContent = team[i];
+
+          const button = document.createElement("button");
+          button.className = "circle-remove-btn";
+          button.textContent = "❌";
+          button.addEventListener("click", () => {
+            team[i] = null;
+            renderSlot(i);
+            analyzeTeam();
+          });
+
+          wrapper.appendChild(label);
+          wrapper.appendChild(button);
+          el.appendChild(wrapper);
         } else {
-          slot.text("Drop Here");
+          el.textContent = "+";
         }
       }
 
       function analyzeTeam() {
-        const filled = team.filter((t) => t !== null);
-        if (filled.length === 0) {
-          d3.select("#team-analysis").html("");
+        const filled = team.filter((t) => t);
+        if (filled.length < 2) {
+          document.getElementById("center-score").textContent = "Score";
           return;
         }
 
-        const counts = { E: 0, I: 0, T: 0, F: 0, roles: {} };
-        let compatibilityScore = 0,
+        let score = 0,
           pairs = 0;
-
-        filled.forEach((a, i) => {
-          const role = mbtiRoles[a];
-          counts.roles[role] = (counts.roles[role] || 0) + 1;
-          if (a[0] === "E") counts.E++;
-          else counts.I++;
-          if (a[2] === "T") counts.T++;
-          else counts.F++;
-
+        for (let i = 0; i < filled.length; i++) {
           for (let j = i + 1; j < filled.length; j++) {
+            const a = filled[i];
             const b = filled[j];
             if (compatibility[a] && compatibility[a][b] !== undefined) {
-              compatibilityScore += compatibility[a][b];
+              score += compatibility[a][b];
               pairs++;
             }
           }
-        });
-
-        const avgCompat =
-          pairs > 0 ? (compatibilityScore / pairs).toFixed(3) : "N/A";
-
-        let feedback = `<strong>Avg Compatibility:</strong> ${avgCompat}<br/>`;
-        feedback += `<strong>Extraverts:</strong> ${counts.E}, <strong>Introverts:</strong> ${counts.I}<br/>`;
-        feedback += `<strong>Thinkers:</strong> ${counts.T}, <strong>Feelers:</strong> ${counts.F}<br/>`;
-
-        if (counts.F === 0)
-          feedback += `<span style="color:red;">⚠️ No Feelers. Consider balancing for empathy.</span><br/>`;
-        if (counts.E === 0)
-          feedback += `<span style="color:orange;">🧩 All introverts. Communication might be quiet.</span><br/>`;
-
-        feedback += `<br/><strong>Roles in Team:</strong><ul>`;
-        for (const role in counts.roles) {
-          feedback += `<li>${role}: ${counts.roles[role]}</li>`;
         }
-        feedback += `</ul>`;
 
-        d3.select("#team-analysis").html(feedback);
+        const avg = (score / pairs).toFixed(2);
+        const roles = filled.map((type) => mbtiRoles[type]).join(", ");
+        const center = document.getElementById("center-score");
+        center.innerHTML = `<div>Avg: ${avg}</div><div style='font-size: 12px;'>${roles}</div>`;
       }
 
       function populateMatchDropdowns() {
@@ -1331,10 +1423,10 @@
         }
 
         d3.select("#match-result").html(`
-    <strong>${a} ❤️ ${b}</strong><br/>
-    <strong>Compatibility Score:</strong> ${score}<br/>
-    <p>${message}</p>
-  `);
+          <strong>${a} ❤️ ${b}</strong><br/>
+          <strong>Compatibility Score:</strong> ${score}<br/>
+          <p>${message}</p>
+        `);
       }
     </script>
   </body>
