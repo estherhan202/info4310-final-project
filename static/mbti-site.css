@@ -15,8 +15,14 @@ h5 {
 }
 
 section {
-  margin-bottom: 60px;
+  min-height: 100vh; /* each section fills at least the viewport height */
+  padding: 80px 40px; /* add nice breathing space */
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  justify-content: center; /* centers vertically if short */
 }
+
 
 button {
   background-color: #6dc2b1;
@@ -56,6 +62,50 @@ select {
 .intro-questions {
   margin-top: 20px;
 }
+
+/* HOVER SIDEBAR */
+#sidebar-hover {
+  position: fixed;
+  top: 120px;
+  left: -140px; /* hidden offscreen except a sliver */
+  width: 160px;
+  background: #f2fbfa;
+  padding: 20px 10px;
+  border-radius: 0 10px 10px 0;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  transition: left 0.4s ease;
+  z-index: 1000;
+  opacity: 0.95;
+}
+
+/* When you hover over sidebar, slide it out */
+#sidebar-hover:hover {
+  left: 0;
+}
+
+/* Sidebar Links */
+#sidebar-hover ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+#sidebar-hover li {
+  margin-bottom: 20px;
+}
+
+#sidebar-hover a {
+  text-decoration: none;
+  color: #333;
+  font-weight: 600;
+  font-size: 14px;
+  transition: color 0.3s;
+}
+
+#sidebar-hover a:hover {
+  color: #6dc2b1;
+}
+
 
 /* MBTI-TEST */
 #mbti-test {
@@ -556,9 +606,9 @@ button.circle-remove-btn {
 }
 
 .country.selected {
-  stroke: #f67280;
+  stroke: #a77bc2;
   stroke-width: 2px;
-  fill: #f8c291;
+  fill: #b59ac6;
 }
 
 .country {
@@ -571,12 +621,12 @@ button.circle-remove-btn {
 }
 
 .bar {
-  fill: #92d5c6;
-  transition: fill 0.3s ease;
+  transition: fill 0.2s ease;
 }
 
 .bar:hover {
-  fill: #6dc2b1;
+  filter: brightness(0.5); /* 20% brighter on hover */
+  cursor: pointer;
 }
 
 #country-div {
@@ -588,4 +638,13 @@ button.circle-remove-btn {
 .country-div-2 {
   flex: 1;
   text-align: center;
+}
+
+#traits-charts {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  grid-gap: 10px;
+  justify-items: center;
+  align-items: center;
+  padding-top: 10px;
 }

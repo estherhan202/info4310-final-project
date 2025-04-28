@@ -31,6 +31,16 @@
     </div>
   </section>
 
+  <nav id="sidebar-hover">
+    <ul>
+      <li><a href="#mbti-test">MBTI Quiz</a></li>
+      <li><a href="#builder">Explore MBTIs</a></li>
+      <li><a href="#match-types">Match Types</a></li>
+      <li><a href="#build-team">Build a Team</a></li>
+      <li><a href="#country-div">MBTI Map</a></li>
+    </ul>
+  </nav>
+
   <section id="mbti-test">
     <div id="quiz-container">
       <div id="question-progress"></div>
@@ -150,11 +160,19 @@
   <div>
     <h2>MBTI Distribution by Country</h2>
     <p>
-      Discover how MBTI types are distributed around the world and how they
-      compare across countries. Click on a country to explore its unique MBTI
-      profile—and see where you might fit in!
+      Discover MBTI patterns around the world. Through the world map and trait charts, you can explore how different
+      countries lean in their MBTI distributions — both in overall personality types and in the underlying traits that
+      shape them.
     </p>
-
+    <p>
+      Together, the visuals reveal how individual and cultural differences weave into a larger global story — helping
+      you find your place within it.
+    </p>
+    <p style="font-size: 0.9em; color: #666; margin-top: 10px;">
+      <em>The trait charts reveal general cultural leanings, but a dominant trait doesn’t always translate to the most
+        common MBTI type. In China, for example, Sensing is more prevalent, yet the most popular type is the Intuitive
+        INFP.</em>
+    </p>
 
     <div id="country-div">
       <div style="display:flex; flex-direction: column; justify-content: center;">
@@ -165,12 +183,14 @@
         </div>
       </div>
       <div class="country-div-2">
-        <h3>MBTI Type Distribution</h3>
-        <svg id="barchart" width="520" height="400"></svg>
+        <h3>MBTI Trait Distribution</h3>
+        <div id="traits-charts"></div>
       </div>
     </div>
+
     <div class="tooltip"></div>
   </div>
+
 
   <script>
     // MBTI TEST - Section 1
@@ -327,20 +347,6 @@
 
     const tooltip = d3.select(".tooltip");
     const svgMap = d3.select("#map");
-    const svgBar = d3.select("#barchart");
-    const margin = { top: 20, right: 20, bottom: 50, left: 60 };
-    const width = +svgBar.attr("width") - margin.left - margin.right;
-    const height = +svgBar.attr("height") - margin.top - margin.bottom;
-    const chart = svgBar
-      .append("g")
-      .attr("transform", `translate(${margin.left},${margin.top})`);
-
-    const y = d3.scaleLinear().range([height, 0]);
-    const x = d3.scaleBand().range([0, width]).padding(0.2);
-    const xAxis = chart
-      .append("g")
-      .attr("transform", `translate(0, ${height})`);
-    const yAxis = chart.append("g");
     const loadData = async () => {
       const countryData = await d3.csv("countries.csv");
       const geoData = await d3.json("countries.geojson");
@@ -424,46 +430,136 @@
         const row = countryData.find((d) => d.Country.trim() === countryName);
         if (!row) return;
 
-        const values = {};
+        const counts = {
+          E: 0, I: 0,
+          S: 0, N: 0,
+          T: 0, F: 0,
+          J: 0, P: 0,
+        };
+
         mbtiTypes.forEach((type) => {
           const a = +row[`${type}-A`] || 0;
           const t = +row[`${type}-T`] || 0;
-          values[type] = a + t;
+          const total = a + t;
+
+          if (type[0] === "E") counts.E += total;
+          else counts.I += total;
+
+          if (type[1] === "S") counts.S += total;
+          else counts.N += total;
+
+          if (type[2] === "T") counts.T += total;
+          else counts.F += total;
+
+          if (type[3] === "J") counts.J += total;
+          else counts.P += total;
         });
 
-        const dataset = mbtiTypes.map((type) => ({
-          type,
-          value: values[type],
-        }));
+        // Clear previous mini charts
+        d3.select("#traits-charts").html("");
 
-        x.domain(mbtiTypes);
-        y.domain([0, d3.max(dataset, (d) => d.value)]);
+        const dimensions = [
+          { pair: ["E", "I"], title: "Extraversion vs Introversion" },
+          { pair: ["S", "N"], title: "Sensing vs Intuition" },
+          { pair: ["T", "F"], title: "Thinking vs Feeling" },
+          { pair: ["J", "P"], title: "Judging vs Perceiving" },
+        ];
 
-        xAxis.transition().duration(500).call(d3.axisBottom(x));
-        yAxis.transition().duration(500).call(d3.axisLeft(y).ticks(5));
+        dimensions.forEach(({ pair, title }) => {
+          drawMiniChart(pair, title, counts);
+        });
+      }
 
-        const bars = chart.selectAll(".bar").data(dataset, (d) => d.type);
+      function drawMiniChart(pair, title, counts) {
+        const miniWidth = 300;
+        const miniHeight = 300;
+        const margin = { top: 30, right: 20, bottom: 40, left: 40 };
 
-        bars
+        const svg = d3.select("#traits-charts")
+          .append("svg")
+          .attr("width", miniWidth)
+          .attr("height", miniHeight)
+          .style("background", "#f9fbfd")
+          .style("border-radius", "8px")
+          .style("box-shadow", "0 2px 6px rgba(0,0,0,0.1)");
+
+        const chart = svg.append("g")
+          .attr("transform", `translate(${margin.left},${margin.top})`);
+
+        const width = miniWidth - margin.left - margin.right;
+        const height = miniHeight - margin.top - margin.bottom;
+
+        const x = d3.scaleBand()
+          .domain(pair)
+          .range([0, width])
+          .padding(0.4);
+
+        const y = d3.scaleLinear()
+          .domain([0, d3.max(pair.map(d => counts[d]))])
+          .range([height, 0]);
+
+        // 🔥 NEW: Determine which is bigger
+        const colorMap = {};
+        if (counts[pair[0]] > counts[pair[1]]) {
+          colorMap[pair[0]] = "#a77bc2"; // purple for bigger
+          colorMap[pair[1]] = "#6dc2b1"; // green for smaller
+        } else {
+          colorMap[pair[0]] = "#6dc2b1";
+          colorMap[pair[1]] = "#a77bc2";
+        }
+
+        const tooltip = d3.select(".tooltip");
+
+        const bars = chart.selectAll(".bar")
+          .data(pair)
           .enter()
           .append("rect")
           .attr("class", "bar")
-          .attr("x", (d) => x(d.type))
+          .attr("x", d => x(d))
           .attr("width", x.bandwidth())
           .attr("y", height)
           .attr("height", 0)
-          .merge(bars)
-          .transition()
+          .attr("fill", d => colorMap[d])
+          .on("mouseover", (event, d) => {
+            tooltip.transition().duration(100).style("opacity", 0.9);
+            tooltip.html(`${d}: ${(counts[d] * 100).toFixed(1)}%`)
+              .style("left", (event.pageX + 10) + "px")
+              .style("top", (event.pageY - 28) + "px");
+          })
+          .on("mousemove", (event) => {
+            tooltip.style("left", (event.pageX + 10) + "px")
+              .style("top", (event.pageY - 28) + "px");
+          })
+          .on("mouseout", () => {
+            tooltip.transition().duration(200).style("opacity", 0);
+          });
+
+        bars.transition()
           .duration(800)
-          .attr("x", (d) => x(d.type))
-          .attr("width", x.bandwidth())
-          .attr("y", (d) => y(d.value))
-          .attr("height", (d) => height - y(d.value));
+          .attr("y", d => y(counts[d]))
+          .attr("height", d => height - y(counts[d]));
 
-        bars.exit().remove();
+        chart.append("g")
+          .attr("transform", `translate(0,${height})`)
+          .call(d3.axisBottom(x))
+          .selectAll("text")
+          .style("font-size", "12px");
+
+        chart.append("g")
+          .call(d3.axisLeft(y).ticks(4))
+          .selectAll("text")
+          .style("font-size", "10px");
+
+        svg.append("text")
+          .attr("x", miniWidth / 2)
+          .attr("y", 20)
+          .attr("text-anchor", "middle")
+          .style("font-size", "13px")
+          .style("font-weight", "600")
+          .text(title);
       }
-    };
 
+    };
     loadData();
 
     //build mbti type
