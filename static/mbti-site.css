@@ -15,12 +15,12 @@ h5 {
 }
 
 section {
-  min-height: 100vh; /* each section fills at least the viewport height */
-  padding: 80px 40px; /* add nice breathing space */
+  min-height: 100vh;
+  padding: 80px 40px;
   box-sizing: border-box;
   display: flex;
   flex-direction: column;
-  justify-content: center; /* centers vertically if short */
+  justify-content: center;
 }
 
 
@@ -63,11 +63,38 @@ select {
   margin-top: 20px;
 }
 
+/* MBTIs */
+#mbti-categories {
+  padding: 60px 40px;
+  background: #f8fafc;
+}
+.aspect-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 30px;
+  margin-top: 30px;
+}
+.aspect-card {
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.05);
+  padding: 20px 24px;
+}
+.aspect-card h3 {
+  margin-top: 0;
+  font-size: 1.2em;
+}
+.aspect-card p {
+  font-size: 0.95em;
+  color: #444;
+}
+
+
 /* HOVER SIDEBAR */
 #sidebar-hover {
   position: fixed;
   top: 120px;
-  left: -140px; /* hidden offscreen except a sliver */
+  left: -140px;
   width: 160px;
   background: #f2fbfa;
   padding: 20px 10px;
@@ -78,12 +105,10 @@ select {
   opacity: 0.95;
 }
 
-/* When you hover over sidebar, slide it out */
 #sidebar-hover:hover {
   left: 0;
 }
 
-/* Sidebar Links */
 #sidebar-hover ul {
   list-style: none;
   padding: 0;
@@ -371,7 +396,7 @@ input[type="range"]::-webkit-slider-thumb {
   background: #f2fbfa;
   border-radius: 16px;
   box-shadow: 0 6px 18px rgba(0, 0, 0, 0.05);
-  max-width: 700px;
+  max-width: 100%;
   margin-left: auto;
   margin-right: auto;
 }
