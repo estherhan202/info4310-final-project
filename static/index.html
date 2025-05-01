@@ -121,7 +121,7 @@
 
   <section id="builder">
     <div class="left-column">
-      <h4>🧠 Your MBTI Type: <span id="mbti-type">????</span></h4>
+      <h2>🫵 Your MBTI Type: <span id="mbti-type">????</span></h2>
       <div class="card profile-card">
         <h5 id="mbti-title"></h5>
         <p id="mbti-description"></p>
@@ -187,16 +187,29 @@
 
   <section id="match-types">
     <h2>💞 Match Two MBTI Types</h2>
-    <p>Select two MBTI types to see their compatibility.</p>
-    <div class="match-controls">
-      <select id="match-type-a"></select>
-      <span>❤️</span>
-      <select id="match-type-b"></select>
-      <button onclick="matchMBTITypes()">Check Match</button>
+    <!-- <p>Select two MBTI types to see their compatibility.</p> -->
+
+    <div class="match-flex">
+      <div class="match-side">
+        <img id="img-a" src="mbti-images/INFJ.png" alt="Type A" />
+        <select id="match-type-a"></select>
+      </div>
+
+      <div class="match-center">
+        <div id="match-result" class="card"></div>
+        <button onclick="matchMBTITypes()">Check Match</button>
+      </div>
+
+      <div class="match-side">
+        <img id="img-b" src="mbti-images/ESTJ.png" alt="Type B" />
+        <select id="match-type-b"></select>
+      </div>
     </div>
 
-    <div id="match-result" class="card"></div>
+
   </section>
+
+
 
   <section id="build-team">
     <h2>🛠 Build a Team</h2>
@@ -219,7 +232,7 @@
   </section>
 
   <section>
-    <h2>MBTI Distribution by Country</h2>
+    <h2>🌍 MBTI Distribution by Country</h2>
     <p>
       Discover MBTI patterns around the world. Through the world map and trait
       charts, you can explore how different countries lean in their MBTI
@@ -993,10 +1006,11 @@
       }
 
       d3.select("#match-result").html(`
-          <strong>${a} ❤️ ${b}</strong><br/>
-          <strong>Compatibility Score:</strong> ${score}<br/>
-          <p>${message}</p>
-        `);
+        <strong>${a} ❤️ ${b}</strong><br/>
+        <strong>Compatibility Score:</strong> ${score}<br/>
+        <p>${message}</p>
+      `);
+
     }
 
     async function getLLMRecommendation(team) {
@@ -1017,6 +1031,24 @@
   const data = await response.json();
   alert(`🤖 LLM Suggestion: Add ${data.recommendedType} — ${data.reason}`);
 }
+
+
+    document.getElementById("match-result").innerHTML =
+      "Select two MBTI types to see their compatibility.";
+
+    document.getElementById("match-type-a").addEventListener("change", () =>
+      updateMatchImage("a")
+    );
+    document.getElementById("match-type-b").addEventListener("change", () =>
+      updateMatchImage("b")
+    );
+
+    function updateMatchImage(side) {
+      const type = document.getElementById(`match-type-${side}`).value;
+      const img = document.getElementById(`img-${side}`);
+      img.src = `mbti-images/${type}.png`;
+    }
+
 
   </script>
 </body>

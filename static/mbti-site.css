@@ -415,10 +415,10 @@ input[type="range"]::-webkit-slider-thumb {
   margin-right: auto;
 }
 
-#match-types h2 {
+/* #match-types h2 {
   text-align: center;
   margin-bottom: 10px;
-}
+} */
 
 #match-types p {
   text-align: center;
@@ -455,7 +455,7 @@ input[type="range"]::-webkit-slider-thumb {
 
 #match-result.card {
   margin-top: 20px;
-  max-width: 500px;
+  width: 500px;
   margin: 0 auto;
   text-align: center;
   font-size: 15px;
@@ -474,6 +474,40 @@ input[type="range"]::-webkit-slider-thumb {
 #match-types .match-controls span {
   font-size: 20px;
 }
+
+.match-flex {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 60px;
+  margin-top: 30px;
+  flex-wrap: wrap;
+}
+
+.match-side {
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+}
+
+.match-side img {
+  width: 300px;
+  height: 300px;
+  object-fit: contain;
+  border-radius: 12px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  background: white;
+}
+
+.match-center {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+}
+
 
 /* BUILD-TEAM */
 #build-team {
