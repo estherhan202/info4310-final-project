@@ -14,6 +14,10 @@ h5 {
   font-weight: 700;
 }
 
+p {
+  font-size: 16pt;
+}
+
 section {
   min-height: 100vh;
   padding: 0px 60px;
@@ -48,6 +52,12 @@ select {
   border: 1px solid #ccc;
 }
 
+img {
+  height: 210px;
+  width: 210px;
+  align-items: center;
+}
+
 /* INTRO */
 #intro {
   height: 100vh;
@@ -80,11 +90,17 @@ select {
 }
 .aspect-card h3 {
   margin-top: 0;
-  font-size: 1.2em;
+  font-size: 22px;
 }
 .aspect-card p {
-  font-size: 0.95em;
+  font-size: 16px;
   color: #444;
+}
+
+.aspect-card img {
+  display: block;
+  margin: 10px auto;
+  
 }
 
 /* HOVER SIDEBAR */
