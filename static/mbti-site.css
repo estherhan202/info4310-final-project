@@ -15,7 +15,7 @@ h5 {
 }
 
 p {
-  font-size: 16pt;
+  font-size: 12pt;
 }
 
 section {
@@ -100,7 +100,6 @@ img {
 .aspect-card img {
   display: block;
   margin: 10px auto;
-  
 }
 
 /* HOVER SIDEBAR */
@@ -507,7 +506,6 @@ input[type="range"]::-webkit-slider-thumb {
   align-items: center;
   gap: 10px;
 }
-
 
 /* BUILD-TEAM */
 #build-team {

@@ -69,11 +69,11 @@
         <p>
           <strong>Extraverts</strong> enjoy group activities and get energized
           through interaction. <br>
-          <img src="mtbi-images/E.svg"> <br>
+          <img src="mbti-images/E.svg"> <br>
           <strong>Introverts</strong> prefer solitude and
           are more sensitive to external stimulation. <br>
         </p>
-        <img src="mtbi-images/I.svg">
+        <img src="mbti-images/I.svg">
 
       </div>
 
@@ -82,11 +82,11 @@
         <p>
           <strong>Observant</strong> (Sensing) types are practical and
           grounded, focusing on present reality. <br>
-          <img src="mtbi-images/S.svg"> <br>
+          <img src="mbti-images/S.svg"> <br>
 
           <strong>Intuitive</strong> types are imaginative and curious,
           attuned to future possibilities. <br>
-          <img src="mtbi-images/N.svg">
+          <img src="mbti-images/N.svg">
 
         </p>
       </div>
@@ -95,11 +95,11 @@
         <h3>T/F - Thinking vs Feeling</h3>
         <p>
           <strong>Thinkers</strong> prioritize logic and objectivity. <br>
-          <img src="mtbi-images/T.svg"> <br>
+          <img src="mbti-images/T.svg"> <br>
 
           <strong>Feelers</strong> focus on empathy, emotions, and social
           harmony. <br>
-          <img src="mtbi-images/F.svg">
+          <img src="mbti-images/F.svg">
 
         </p>
       </div>
@@ -109,10 +109,10 @@
         <p>
           <strong>Judging</strong> individuals prefer order, structure, and
           planning. <br>
-          <img src="mtbi-images/J.svg"> <br>
+          <img src="mbti-images/J.svg"> <br>
           <strong>Prospecting</strong> types are spontaneous,
           adaptable, and open-ended. <br>
-          <img src="mtbi-images/P.svg">
+          <img src="mbti-images/P.svg">
 
         </p>
       </div>
@@ -228,7 +228,6 @@
         <div id="mbti-types"></div>
       </div>
     </div>
-    <button onclick="getLLMRecommendation(team)">🔮 Recommend MBTI Type</button>
   </section>
 
   <section>
@@ -244,7 +243,7 @@
       weave into a larger global story — helping you find your place within
       it.
     </p>
-    <p style="font-size: 0.9em; color: #666; margin-top: 10px">
+    <p style="font-size: 10pt; color: #666; margin-top: 10px">
       <em>The trait charts reveal general cultural leanings, but a dominant
         trait doesn’t always translate to the most common MBTI type. In China,
         for example, Sensing is more prevalent, yet the most popular type is
@@ -1013,24 +1012,7 @@
 
     }
 
-    async function getLLMRecommendation(team) {
-    console.log("bruh")
-      const response = await fetch("http://127.0.0.1:5001/recommend-mbti", {
-      method: "POST",
-      headers: {
-      "Content-Type": "application/json"
-    },
-    body: JSON.stringify({ team })
-  });
 
-  if (!response.ok) {
-    console.error("Failed to fetch recommendation");
-    return;
-  }
-
-  const data = await response.json();
-  alert(`🤖 LLM Suggestion: Add ${data.recommendedType} — ${data.reason}`);
-}
 
 
     document.getElementById("match-result").innerHTML =
