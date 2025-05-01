@@ -207,7 +207,7 @@ r .option:hover {
 }
 
 .result {
-  font-size: 1.5em;
+  font-size: 3.5em;
   font-weight: bold;
 }
 
@@ -595,7 +595,6 @@ button.circle-remove-btn {
   flex-wrap: wrap;
 }
 
-
 #mbti-pool {
   width: 30%;
   margin-top: 30px;
@@ -607,7 +606,6 @@ button.circle-remove-btn {
   gap: 12px;
   text-align: center;
 }
-
 
 /* COUNTRY */
 .tooltip {
