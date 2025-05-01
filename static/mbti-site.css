@@ -23,7 +23,6 @@ section {
   justify-content: center;
 }
 
-
 button {
   background-color: #6dc2b1;
   color: white;
@@ -48,7 +47,6 @@ select {
   padding: 6px;
   border: 1px solid #ccc;
 }
-
 
 /* INTRO */
 #intro {
@@ -88,7 +86,6 @@ select {
   font-size: 0.95em;
   color: #444;
 }
-
 
 /* HOVER SIDEBAR */
 #sidebar-hover {
@@ -131,7 +128,6 @@ select {
   color: #6dc2b1;
 }
 
-
 /* MBTI-TEST */
 #mbti-test {
   padding: 50px;
@@ -152,7 +148,9 @@ select {
 }
 
 #question-progress {
-  text-align: right; font-weight: 600; color: #999
+  text-align: right;
+  font-weight: 600;
+  color: #999;
 }
 
 .question {
@@ -440,7 +438,7 @@ input[type="range"]::-webkit-slider-thumb {
 }
 
 #match-result.card {
-  margin-top: 20px; 
+  margin-top: 20px;
   max-width: 500px;
   margin: 0 auto;
   text-align: center;
@@ -463,7 +461,8 @@ input[type="range"]::-webkit-slider-thumb {
 
 /* BUILD-TEAM */
 #build-team {
-  padding: 40px; margin-top: 60px
+  padding: 40px;
+  margin-top: 60px;
 }
 
 #team-builder #slots {
@@ -624,7 +623,6 @@ button.circle-remove-btn {
   opacity: 0;
 }
 
-
 #countrySelect {
   width: 200px;
   align-items: center;
@@ -672,4 +670,15 @@ button.circle-remove-btn {
   justify-items: center;
   align-items: center;
   padding-top: 10px;
+}
+
+.dynamic-slot {
+  position: absolute;
+  width: 60px;
+  height: 60px;
+  text-align: center;
+  line-height: 60px;
+  border-radius: 50%;
+  background: #f0f0f0;
+  transform: translate(-50%, -50%);
 }
