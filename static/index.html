@@ -215,6 +215,7 @@
         <div id="mbti-types"></div>
       </div>
     </div>
+    <button onclick="getLLMRecommendation(team)">🔮 Recommend MBTI Type</button>
   </section>
 
   <section>
@@ -997,6 +998,26 @@
           <p>${message}</p>
         `);
     }
+
+    async function getLLMRecommendation(team) {
+    console.log("bruh")
+      const response = await fetch("http://127.0.0.1:5001/recommend-mbti", {
+      method: "POST",
+      headers: {
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify({ team })
+  });
+
+  if (!response.ok) {
+    console.error("Failed to fetch recommendation");
+    return;
+  }
+
+  const data = await response.json();
+  alert(`🤖 LLM Suggestion: Add ${data.recommendedType} — ${data.reason}`);
+}
+
   </script>
 </body>
 
