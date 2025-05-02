@@ -66,55 +66,67 @@
     <div class="aspect-grid">
       <div class="aspect-card">
         <h3>E/I - Extraversion vs Introversion</h3>
-        <p>
-          <strong>Extraverts</strong> enjoy group activities and get energized
-          through interaction. <br>
-          <img src="mbti-images/E.svg"> <br>
-          <strong>Introverts</strong> prefer solitude and
-          are more sensitive to external stimulation. <br>
-        </p>
-        <img src="mbti-images/I.svg">
-
+        <div class="trait-row">
+          <div class="trait-block">
+            <p><strong>Extraverts</strong>
+            enjoy group activities and get energized through interaction.</p>
+            <img src="mbti-images/E.svg" />
+          </div>
+          <div class="trait-block">
+            <p><strong>Introverts</strong>
+            prefer solitude and are more sensitive to external stimulation.</p>
+            <img src="mbti-images/I.svg" />
+          </div>
+        </div>
+        
       </div>
 
       <div class="aspect-card">
         <h3>S/N - Sensing vs Intuition</h3>
-        <p>
-          <strong>Observant</strong> (Sensing) types are practical and
-          grounded, focusing on present reality. <br>
-          <img src="mbti-images/S.svg"> <br>
-
-          <strong>Intuitive</strong> types are imaginative and curious,
-          attuned to future possibilities. <br>
-          <img src="mbti-images/N.svg">
-
-        </p>
+        <div class="trait-row">
+          <div class="trait-block">
+            <p><strong>Observant (Sensing)</strong>
+            are practical and grounded, focusing on present reality.</p>
+            <img src="mbti-images/S.svg" />
+          </div>
+          <div class="trait-block">
+            <p><strong>Intuitive</strong>
+            are imaginative and curious, attuned to future possibilities.</p>
+            <img src="mbti-images/N.svg" />
+          </div>
+        </div>
       </div>
 
       <div class="aspect-card">
         <h3>T/F - Thinking vs Feeling</h3>
-        <p>
-          <strong>Thinkers</strong> prioritize logic and objectivity. <br>
-          <img src="mbti-images/T.svg"> <br>
-
-          <strong>Feelers</strong> focus on empathy, emotions, and social
-          harmony. <br>
-          <img src="mbti-images/F.svg">
-
-        </p>
+        <div class="trait-row">
+          <div class="trait-block">
+            <p><strong>Thinkers</strong> 
+            prioritize logic and objectivity when making decisions.</p>
+            <img src="mbti-images/T.svg" />
+          </div>
+          <div class="trait-block">
+            <p><strong>Feelers</strong>
+            focus on empathy, emotions, and social harmony.</p>
+            <img src="mbti-images/F.svg" />
+          </div>
+        </div>
       </div>
 
       <div class="aspect-card">
         <h3>J/P - Judging vs Perceiving</h3>
-        <p>
-          <strong>Judging</strong> individuals prefer order, structure, and
-          planning. <br>
-          <img src="mbti-images/J.svg"> <br>
-          <strong>Prospecting</strong> types are spontaneous,
-          adaptable, and open-ended. <br>
-          <img src="mbti-images/P.svg">
-
-        </p>
+        <div class="trait-row">
+          <div class="trait-block">
+            <p><strong>Judging</strong>
+            individuals prefer order, structure, and planning.</p>
+            <img src="mbti-images/J.svg" />
+          </div>
+          <div class="trait-block">
+            <p><strong>Prospecting</strong>
+            types are spontaneous, adaptable, and open-ended.</p>
+            <img src="mbti-images/P.svg" />
+          </div>
+        </div>
       </div>
     </div>
   </section>
@@ -223,7 +235,6 @@
 
   <section id="match-types">
     <h2>💞 Match Two MBTI Types</h2>
-    <!-- <p>Select two MBTI types to see their compatibility.</p> -->
 
     <div class="match-flex">
       <div class="match-side">
@@ -291,7 +302,8 @@
         <label for="countrySelect">Select or click a country on the map:</label>
         <select id="countrySelect"></select>
         <div class="country-div-2">
-          <svg id="map" width="1000" height="500"></svg>
+          <svg id="map" viewBox="0 0 1200 600" ></svg>
+
         </div>
       </div>
       <div class="country-div-2">
@@ -1047,9 +1059,6 @@
       `);
 
     }
-
-
-
 
     document.getElementById("match-result").innerHTML =
       "Select two MBTI types to see their compatibility.";

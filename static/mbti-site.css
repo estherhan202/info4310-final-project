@@ -102,6 +102,25 @@ img {
   margin: 10px auto;
 }
 
+.trait-row {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  gap: 20px;
+}
+
+.trait-block {
+  align-items: center;
+}
+
+.trait-block img {
+  width: 170px;
+  height: 170px;
+  display: block;
+  margin: 8px auto;
+}
+
 /* HOVER SIDEBAR */
 #sidebar-hover {
   position: fixed;
@@ -404,12 +423,13 @@ input[type="range"]::-webkit-slider-thumb {
 
 /* MATCH-TYPES */
 #match-types {
-  padding: 40px;
+  padding: 50px;
   margin-top: 60px;
   background: #f2fbfa;
   border-radius: 16px;
   box-shadow: 0 6px 18px rgba(0, 0, 0, 0.05);
-  max-width: 100%;
+  max-width: 90%;
+  max-height: 80%;
   margin-left: auto;
   margin-right: auto;
 }
@@ -492,8 +512,8 @@ input[type="range"]::-webkit-slider-thumb {
 }
 
 .match-side img {
-  width: 300px;
-  height: 300px;
+  width: 200px;
+  height: 200px;
   object-fit: contain;
   border-radius: 12px;
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
@@ -667,7 +687,6 @@ button.circle-remove-btn {
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
   opacity: 0;
 }
-
 #countrySelect {
   width: 200px;
   align-items: center;
@@ -693,19 +712,37 @@ button.circle-remove-btn {
 }
 
 .bar:hover {
-  filter: brightness(0.5); /* 20% brighter on hover */
+  filter: brightness(0.5);
   cursor: pointer;
 }
 
 #country-div {
   display: flex;
-  align-items: center;
-  justify-content: space-around;
+  flex-direction: row;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  justify-content: center;
+  gap: 40px;
+  padding: 20px;
+  box-sizing: border-box;
+  width: 100%;
 }
 
 .country-div-2 {
-  flex: 1;
+  flex: 1 1 400px;
+  min-width: 320px;
+  max-width: 600px;
   text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+#map {
+  display: block;
+  width: 900px;
+  margin-right: -150px;
+  margin-top: 30px;
 }
 
 #traits-charts {
@@ -716,6 +753,7 @@ button.circle-remove-btn {
   align-items: center;
   padding-top: 10px;
   max-width: 500px;
+  width: 100%;
 }
 
 .dynamic-slot {
