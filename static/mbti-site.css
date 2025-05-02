@@ -715,6 +715,7 @@ button.circle-remove-btn {
   justify-items: center;
   align-items: center;
   padding-top: 10px;
+  max-width: 500px;
 }
 
 .dynamic-slot {

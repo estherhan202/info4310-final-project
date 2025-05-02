@@ -32,27 +32,27 @@
     </div>
   </section>
 
-  <nav id="sidebar-hover">
-    <ul>
-      <li><a href="#mbti-test">MBTI Quiz</a></li>
-      <li><a href="#mbti-categories">Five Aspects</a></li>
-      <li><a href="#builder">Explore MBTIs</a></li>
-      <li><a href="#match-types">Match Types</a></li>
-      <li><a href="#build-team">Build a Team</a></li>
-      <li><a href="#country-div">MBTI Map</a></li>
-    </ul>
-  </nav>
+    <nav id="sidebar-hover">
+      <ul>
+        <li><a href="#mbti-test">MBTI Quiz</a></li>
+        <li><a href="#mbti-categories">Five Aspects</a></li>
+        <li><a href="#builder">Explore MBTIs</a></li>
+        <li><a href="#match-types">Match Types</a></li>
+        <li><a href="#build-team">Build a Team</a></li>
+        <li><a href="#country-div">MBTI Map</a></li>
+      </ul>
+    </nav>
 
-  <section id="mbti-test">
-    <div id="quiz-container">
-      <div id="question-progress"></div>
-      <div id="question-container">
-        <div class="question" id="question-text"></div>
-        <div class="options" id="options"></div>
+    <section id="mbti-test">
+      <div id="quiz-container">
+        <div id="question-progress"></div>
+        <div id="question-container">
+          <div class="question" id="question-text"></div>
+          <div class="options" id="options"></div>
+        </div>
+        <div id="result" class="result hidden"></div>
       </div>
-      <div id="result" class="result hidden"></div>
-    </div>
-  </section>
+    </section>
 
   <section id="mbti-categories">
     <h2>📊 Five MBTI Personality Aspects</h2>
@@ -161,29 +161,65 @@
       </div>
     </div>
 
-    <div class="right-column">
-      <div id="radar-chart"></div>
-      <div id="slider-container">
-        <div class="trait">
-          <label for="ei">Extraversion vs Introversion (E/I):
-            <span id="ei-val">50%</span></label>
-          <input type="range" id="ei" min="0" max="1" step="0.01" value="0.5" />
-        </div>
-        <div class="trait">
-          <label for="sn">Sensing vs Intuition (S/N): <span id="sn-val">50%</span></label>
-          <input type="range" id="sn" min="0" max="1" step="0.01" value="0.5" />
-        </div>
-        <div class="trait">
-          <label for="tf">Thinking vs Feeling (T/F): <span id="tf-val">50%</span></label>
-          <input type="range" id="tf" min="0" max="1" step="0.01" value="0.5" />
-        </div>
-        <div class="trait">
-          <label for="jp">Judging vs Prospecting (J/P): <span id="jp-val">50%</span></label>
-          <input type="range" id="jp" min="0" max="1" step="0.01" value="0.5" />
+      <div class="right-column">
+        <div id="radar-chart"></div>
+        <div id="slider-container">
+          <div class="trait">
+            <label for="ei"
+              >Extraversion vs Introversion (E/I):
+              <span id="ei-val">50%</span></label
+            >
+            <input
+              type="range"
+              id="ei"
+              min="0"
+              max="1"
+              step="0.01"
+              value="0.5"
+            />
+          </div>
+          <div class="trait">
+            <label for="sn"
+              >Sensing vs Intuition (S/N): <span id="sn-val">50%</span></label
+            >
+            <input
+              type="range"
+              id="sn"
+              min="0"
+              max="1"
+              step="0.01"
+              value="0.5"
+            />
+          </div>
+          <div class="trait">
+            <label for="tf"
+              >Thinking vs Feeling (T/F): <span id="tf-val">50%</span></label
+            >
+            <input
+              type="range"
+              id="tf"
+              min="0"
+              max="1"
+              step="0.01"
+              value="0.5"
+            />
+          </div>
+          <div class="trait">
+            <label for="jp"
+              >Judging vs Prospecting (J/P): <span id="jp-val">50%</span></label
+            >
+            <input
+              type="range"
+              id="jp"
+              min="0"
+              max="1"
+              step="0.01"
+              value="0.5"
+            />
+          </div>
         </div>
       </div>
-    </div>
-  </section>
+    </section>
 
   <section id="match-types">
     <h2>💞 Match Two MBTI Types</h2>
@@ -223,12 +259,12 @@
         <div id="center-score">Score</div>
       </div>
 
-      <div id="mbti-pool">
-        <h4>Available MBTI Types</h4>
-        <div id="mbti-types"></div>
+        <div id="mbti-pool">
+          <h4>Available MBTI Types</h4>
+          <div id="mbti-types"></div>
+        </div>
       </div>
-    </div>
-  </section>
+    </section>
 
   <section>
     <h2>🌍 MBTI Distribution by Country</h2>
@@ -267,113 +303,113 @@
     <div class="tooltip"></div>
   </section>
 
-  <script>
-    // MBTI TEST - Section 1
-    const testValues = {
-      "-3": "Strongly Disagree",
-      "-2": "Disagree",
-      "-1": "Slightly Disagree",
-      0: "Neutral",
-      1: "Slightly Agree",
-      2: "Agree",
-      3: "Strongly Agree",
-    };
+    <script>
+      // MBTI TEST - Section 1
+      const testValues = {
+        "-3": "Strongly Disagree",
+        "-2": "Disagree",
+        "-1": "Slightly Disagree",
+        0: "Neutral",
+        1: "Slightly Agree",
+        2: "Agree",
+        3: "Strongly Agree",
+      };
 
-    const scaleColors = {
-      "-3": "#3eb489",
-      "-2": "#6dc2b1",
-      "-1": "#9ed3c7",
-      0: "#ccc",
-      1: "#bba9d6",
-      2: "#a77bc2",
-      3: "#894fb9",
-    };
+      const scaleColors = {
+        "-3": "#3eb489",
+        "-2": "#6dc2b1",
+        "-1": "#9ed3c7",
+        0: "#ccc",
+        1: "#bba9d6",
+        2: "#a77bc2",
+        3: "#894fb9",
+      };
 
-    let questions = [];
-    let currentQuestionIndex = 0;
-    let responses = [];
+      let questions = [];
+      let currentQuestionIndex = 0;
+      let responses = [];
 
-    const dimensionMap = {
-      EI: [0, 1, 2, 3, 4],
-      SN: [5, 6, 7, 8, 9],
-      TF: [10, 11, 12, 13, 14],
-      JP: [15, 16, 17, 18, 19],
-    };
+      const dimensionMap = {
+        EI: [0, 1, 2, 3, 4],
+        SN: [5, 6, 7, 8, 9],
+        TF: [10, 11, 12, 13, 14],
+        JP: [15, 16, 17, 18, 19],
+      };
 
-    d3.csv("16P.csv").then((data) => {
-      const firstRow = data[0];
-      const allKeys = Object.keys(firstRow);
+      d3.csv("16P.csv").then((data) => {
+        const firstRow = data[0];
+        const allKeys = Object.keys(firstRow);
 
-      const selectedIndexes = [
-        1,
-        6,
-        11,
-        16,
-        31, // E/I
-        2,
-        12,
-        17,
-        30,
-        32, // S/N
-        3,
-        9,
-        19,
-        23,
-        50, // T/F
-        4,
-        7,
-        10,
-        14,
-        25, // J/P
-      ];
+        const selectedIndexes = [
+          1,
+          6,
+          11,
+          16,
+          31, // E/I
+          2,
+          12,
+          17,
+          30,
+          32, // S/N
+          3,
+          9,
+          19,
+          23,
+          50, // T/F
+          4,
+          7,
+          10,
+          14,
+          25, // J/P
+        ];
 
-      questions = selectedIndexes.map((i) => allKeys[i]);
-      showQuestion();
-    });
-
-    function showQuestion() {
-      d3.select("#question-progress").text(
-        `${currentQuestionIndex + 1} / ${questions.length}`
-      );
-      d3.select("#question-text").text(questions[currentQuestionIndex]);
-
-      const optionsDiv = d3.select("#options");
-      optionsDiv.html("");
-
-      d3.range(-3, 4).forEach((val) => {
-        optionsDiv
-          .append("div")
-          .attr("class", "option")
-          .style("color", scaleColors[val])
-          .style("border", `2px solid ${scaleColors[val]}`)
-          .style("cursor", "pointer")
-          .text(testValues[val])
-          .on("mouseover", function () {
-            d3.select(this)
-              .style("background-color", scaleColors[val])
-              .style("color", "#fff");
-          })
-          .on("mouseout", function () {
-            d3.select(this)
-              .style("background-color", "transparent")
-              .style("color", scaleColors[val]);
-          })
-          .on("click", () => {
-            responses.push(+val);
-            currentQuestionIndex++;
-            if (currentQuestionIndex < questions.length) {
-              showQuestion();
-            } else {
-              showResult();
-            }
-          });
+        questions = selectedIndexes.map((i) => allKeys[i]);
+        showQuestion();
       });
-    }
 
-    function showResult() {
-      d3.select("#question-container").classed("hidden", true);
-      d3.select("#question-progress").classed("hidden", true);
-      d3.select("#result").classed("hidden", false);
+      function showQuestion() {
+        d3.select("#question-progress").text(
+          `${currentQuestionIndex + 1} / ${questions.length}`
+        );
+        d3.select("#question-text").text(questions[currentQuestionIndex]);
+
+        const optionsDiv = d3.select("#options");
+        optionsDiv.html("");
+
+        d3.range(-3, 4).forEach((val) => {
+          optionsDiv
+            .append("div")
+            .attr("class", "option")
+            .style("color", scaleColors[val])
+            .style("border", `2px solid ${scaleColors[val]}`)
+            .style("cursor", "pointer")
+            .text(testValues[val])
+            .on("mouseover", function () {
+              d3.select(this)
+                .style("background-color", scaleColors[val])
+                .style("color", "#fff");
+            })
+            .on("mouseout", function () {
+              d3.select(this)
+                .style("background-color", "transparent")
+                .style("color", scaleColors[val]);
+            })
+            .on("click", () => {
+              responses.push(+val);
+              currentQuestionIndex++;
+              if (currentQuestionIndex < questions.length) {
+                showQuestion();
+              } else {
+                showResult();
+              }
+            });
+        });
+      }
+
+      function showResult() {
+        d3.select("#question-container").classed("hidden", true);
+        d3.select("#question-progress").classed("hidden", true);
+        d3.select("#result").classed("hidden", false);
 
       const type = calculateMBTI();
       d3.select("#result").text(`Your MBTI type is: ${type}!`);
@@ -407,131 +443,131 @@
       });
     }
 
-    function calculateMBTI() {
-      let type = "";
+      function calculateMBTI() {
+        let type = "";
 
-      const scoreDimension = (indexes, positiveValue, negativeValue) => {
-        let score = 0;
-        indexes.forEach((i) => {
-          score += responses[i];
-        });
-        return score >= 0 ? positiveValue : negativeValue;
-      };
+        const scoreDimension = (indexes, positiveValue, negativeValue) => {
+          let score = 0;
+          indexes.forEach((i) => {
+            score += responses[i];
+          });
+          return score >= 0 ? positiveValue : negativeValue;
+        };
 
-      type += scoreDimension(dimensionMap.EI, "E", "I");
-      type += scoreDimension(dimensionMap.SN, "N", "S");
-      type += scoreDimension(dimensionMap.TF, "F", "T");
-      type += scoreDimension(dimensionMap.JP, "J", "P");
+        type += scoreDimension(dimensionMap.EI, "E", "I");
+        type += scoreDimension(dimensionMap.SN, "N", "S");
+        type += scoreDimension(dimensionMap.TF, "F", "T");
+        type += scoreDimension(dimensionMap.JP, "J", "P");
 
-      return type;
-    }
+        return type;
+      }
 
-    //country
-    const mbtiTypes = [
-      "ESTJ",
-      "ESFJ",
-      "INFP",
-      "ENFP",
-      "ESTP",
-      "ISTJ",
-      "INTP",
-      "INFJ",
-      "ISFP",
-      "ENTJ",
-      "ESFP",
-      "ENTP",
-      "ENFJ",
-      "INTJ",
-      "ISFJ",
-      "ISTP",
-    ];
+      //country
+      const mbtiTypes = [
+        "ESTJ",
+        "ESFJ",
+        "INFP",
+        "ENFP",
+        "ESTP",
+        "ISTJ",
+        "INTP",
+        "INFJ",
+        "ISFP",
+        "ENTJ",
+        "ESFP",
+        "ENTP",
+        "ENFJ",
+        "INTJ",
+        "ISFJ",
+        "ISTP",
+      ];
 
-    let selectedCountry = null;
+      let selectedCountry = null;
 
-    const tooltip = d3.select(".tooltip");
-    const svgMap = d3.select("#map");
-    const loadData = async () => {
-      const countryData = await d3.csv("countries.csv");
-      const geoData = await d3.json("countries.geojson");
+      const tooltip = d3.select(".tooltip");
+      const svgMap = d3.select("#map");
+      const loadData = async () => {
+        const countryData = await d3.csv("countries.csv");
+        const geoData = await d3.json("countries.geojson");
 
-      const countries = countryData.map((d) => d.Country.trim());
-      const select = d3.select("#countrySelect");
+        const countries = countryData.map((d) => d.Country.trim());
+        const select = d3.select("#countrySelect");
 
-      select
-        .selectAll("option")
-        .data(countries)
-        .enter()
-        .append("option")
-        .text((d) => d)
-        .attr("value", (d) => d);
+        select
+          .selectAll("option")
+          .data(countries)
+          .enter()
+          .append("option")
+          .text((d) => d)
+          .attr("value", (d) => d);
 
-      select.on("change", () => {
-        const name = select.property("value");
-        selectedCountry = name;
-        updateChart(name);
-        updateMapHighlight();
-      });
-
-      updateChart(countries[0]);
-
-      const projection = d3
-        .geoNaturalEarth1()
-        .scale(160)
-        .translate([480, 250]);
-      const path = d3.geoPath().projection(projection);
-
-      svgMap
-        .selectAll("path")
-        .data(geoData.features)
-        .join("path")
-        .attr("d", path)
-        .attr("class", "country")
-        .on("mouseover", function (event, d) {
-          const name = d.properties.name.trim();
-          const row = countryData.find((c) => c.Country.trim() === name);
-          if (row) {
-            let max = 0;
-            let topType = "";
-            mbtiTypes.forEach((type) => {
-              const total =
-                (+row[`${type}-A`] || 0) + (+row[`${type}-T`] || 0);
-              if (total > max) {
-                max = total;
-                topType = type;
-              }
-            });
-            tooltip.transition().duration(200).style("opacity", 0.9);
-            tooltip
-              .html(
-                `<strong>${name}</strong><br>Most common type: ${topType}`
-              )
-              .style("left", event.pageX + 5 + "px")
-              .style("top", event.pageY - 28 + "px");
-          }
-        })
-        .on("mouseout", function () {
-          tooltip.transition().duration(500).style("opacity", 0);
-        })
-        .on("click", function (event, d) {
-          const name = d.properties.name.trim();
-          select.property("value", name);
+        select.on("change", () => {
+          const name = select.property("value");
           selectedCountry = name;
           updateChart(name);
           updateMapHighlight();
         });
 
-      function updateMapHighlight() {
+        updateChart(countries[0]);
+
+        const projection = d3
+          .geoNaturalEarth1()
+          .scale(160)
+          .translate([480, 250]);
+        const path = d3.geoPath().projection(projection);
+
         svgMap
           .selectAll("path")
-          .classed(
-            "selected",
-            (d) => d.properties.name.trim() === selectedCountry
-          );
-      }
+          .data(geoData.features)
+          .join("path")
+          .attr("d", path)
+          .attr("class", "country")
+          .on("mouseover", function (event, d) {
+            const name = d.properties.name.trim();
+            const row = countryData.find((c) => c.Country.trim() === name);
+            if (row) {
+              let max = 0;
+              let topType = "";
+              mbtiTypes.forEach((type) => {
+                const total =
+                  (+row[`${type}-A`] || 0) + (+row[`${type}-T`] || 0);
+                if (total > max) {
+                  max = total;
+                  topType = type;
+                }
+              });
+              tooltip.transition().duration(200).style("opacity", 0.9);
+              tooltip
+                .html(
+                  `<strong>${name}</strong><br>Most common type: ${topType}`
+                )
+                .style("left", event.pageX + 5 + "px")
+                .style("top", event.pageY - 28 + "px");
+            }
+          })
+          .on("mouseout", function () {
+            tooltip.transition().duration(500).style("opacity", 0);
+          })
+          .on("click", function (event, d) {
+            const name = d.properties.name.trim();
+            select.property("value", name);
+            selectedCountry = name;
+            updateChart(name);
+            updateMapHighlight();
+          });
 
-      function updateChart(countryName) {
-        const row = countryData.find((d) => d.Country.trim() === countryName);
-        if (!row) return;
+        function updateMapHighlight() {
+          svgMap
+            .selectAll("path")
+            .classed(
+              "selected",
+              (d) => d.properties.name.trim() === selectedCountry
+            );
+        }
+
+        function updateChart(countryName) {
+          const row = countryData.find((d) => d.Country.trim() === countryName);
+          if (!row) return;
 
         const counts = {
           E: 0,
@@ -544,43 +580,43 @@
           P: 0,
         };
 
-        mbtiTypes.forEach((type) => {
-          const a = +row[`${type}-A`] || 0;
-          const t = +row[`${type}-T`] || 0;
-          const total = a + t;
+          mbtiTypes.forEach((type) => {
+            const a = +row[`${type}-A`] || 0;
+            const t = +row[`${type}-T`] || 0;
+            const total = a + t;
 
-          if (type[0] === "E") counts.E += total;
-          else counts.I += total;
+            if (type[0] === "E") counts.E += total;
+            else counts.I += total;
 
-          if (type[1] === "S") counts.S += total;
-          else counts.N += total;
+            if (type[1] === "S") counts.S += total;
+            else counts.N += total;
 
-          if (type[2] === "T") counts.T += total;
-          else counts.F += total;
+            if (type[2] === "T") counts.T += total;
+            else counts.F += total;
 
-          if (type[3] === "J") counts.J += total;
-          else counts.P += total;
-        });
+            if (type[3] === "J") counts.J += total;
+            else counts.P += total;
+          });
 
-        // Clear previous mini charts
-        d3.select("#traits-charts").html("");
+          // Clear previous mini charts
+          d3.select("#traits-charts").html("");
 
-        const dimensions = [
-          { pair: ["E", "I"], title: "Extraversion vs Introversion" },
-          { pair: ["S", "N"], title: "Sensing vs Intuition" },
-          { pair: ["T", "F"], title: "Thinking vs Feeling" },
-          { pair: ["J", "P"], title: "Judging vs Perceiving" },
-        ];
+          const dimensions = [
+            { pair: ["E", "I"], title: "Extraversion vs Introversion" },
+            { pair: ["S", "N"], title: "Sensing vs Intuition" },
+            { pair: ["T", "F"], title: "Thinking vs Feeling" },
+            { pair: ["J", "P"], title: "Judging vs Perceiving" },
+          ];
 
-        dimensions.forEach(({ pair, title }) => {
-          drawMiniChart(pair, title, counts);
-        });
-      }
+          dimensions.forEach(({ pair, title }) => {
+            drawMiniChart(pair, title, counts);
+          });
+        }
 
-      function drawMiniChart(pair, title, counts) {
-        const miniWidth = 300;
-        const miniHeight = 300;
-        const margin = { top: 30, right: 20, bottom: 40, left: 40 };
+        function drawMiniChart(pair, title, counts) {
+          const miniWidth = 220;
+          const miniHeight = 220;
+          const margin = { top: 30, right: 20, bottom: 40, left: 40 };
 
         const svg = d3
           .select("#traits-charts")
@@ -595,8 +631,8 @@
           .append("g")
           .attr("transform", `translate(${margin.left},${margin.top})`);
 
-        const width = miniWidth - margin.left - margin.right;
-        const height = miniHeight - margin.top - margin.bottom;
+          const width = miniWidth - margin.left - margin.right;
+          const height = miniHeight - margin.top - margin.bottom;
 
         const x = d3.scaleBand().domain(pair).range([0, width]).padding(0.4);
 
@@ -605,17 +641,17 @@
           .domain([0, d3.max(pair.map((d) => counts[d]))])
           .range([height, 0]);
 
-        // 🔥 NEW: Determine which is bigger
-        const colorMap = {};
-        if (counts[pair[0]] > counts[pair[1]]) {
-          colorMap[pair[0]] = "#a77bc2"; // purple for bigger
-          colorMap[pair[1]] = "#6dc2b1"; // green for smaller
-        } else {
-          colorMap[pair[0]] = "#6dc2b1";
-          colorMap[pair[1]] = "#a77bc2";
-        }
+          // 🔥 NEW: Determine which is bigger
+          const colorMap = {};
+          if (counts[pair[0]] > counts[pair[1]]) {
+            colorMap[pair[0]] = "#a77bc2"; // purple for bigger
+            colorMap[pair[1]] = "#6dc2b1"; // green for smaller
+          } else {
+            colorMap[pair[0]] = "#6dc2b1";
+            colorMap[pair[1]] = "#a77bc2";
+          }
 
-        const tooltip = d3.select(".tooltip");
+          const tooltip = d3.select(".tooltip");
 
         const bars = chart
           .selectAll(".bar")
@@ -675,212 +711,212 @@
     };
     loadData();
 
-    //build mbti type
-    const sliders = {
-      ei: document.getElementById("ei"),
-      sn: document.getElementById("sn"),
-      tf: document.getElementById("tf"),
-      jp: document.getElementById("jp"),
-    };
-
-    const sliderVals = {
-      ei: document.getElementById("ei-val"),
-      sn: document.getElementById("sn-val"),
-      tf: document.getElementById("tf-val"),
-      jp: document.getElementById("jp-val"),
-    };
-
-    const mbtiOutput = document.getElementById("mbti-type");
-    const profileBox = document.getElementById("mbti-profile");
-
-    function getMBTI(values) {
-      return [
-        values.ei < 0.5 ? "E" : "I",
-        values.sn < 0.5 ? "S" : "N",
-        values.tf < 0.5 ? "T" : "F",
-        values.jp < 0.5 ? "J" : "P",
-      ].join("");
-    }
-
-    function updateMBTIProfile(data) {
-      const values = {
-        ei: parseFloat(sliders.ei.value),
-        sn: parseFloat(sliders.sn.value),
-        tf: parseFloat(sliders.tf.value),
-        jp: parseFloat(sliders.jp.value),
+      //build mbti type
+      const sliders = {
+        ei: document.getElementById("ei"),
+        sn: document.getElementById("sn"),
+        tf: document.getElementById("tf"),
+        jp: document.getElementById("jp"),
       };
 
-      sliderVals.ei.textContent = `${Math.round(values.ei * 100)}%`;
-      sliderVals.sn.textContent = `${Math.round(values.sn * 100)}%`;
-      sliderVals.tf.textContent = `${Math.round(values.tf * 100)}%`;
-      sliderVals.jp.textContent = `${Math.round(values.jp * 100)}%`;
+      const sliderVals = {
+        ei: document.getElementById("ei-val"),
+        sn: document.getElementById("sn-val"),
+        tf: document.getElementById("tf-val"),
+        jp: document.getElementById("jp-val"),
+      };
 
-      const type = getMBTI(values);
-      mbtiOutput.textContent = type;
+      const mbtiOutput = document.getElementById("mbti-type");
+      const profileBox = document.getElementById("mbti-profile");
 
-      const match = data.find((d) => d.Type === type);
-      if (match) {
-        document.getElementById(
-          "mbti-title"
-        ).textContent = `${match.Nickname} (${match.Type})`;
-        document.getElementById("mbti-description").textContent =
-          match.Description;
-        const celebList = JSON.parse(match.Celebrities.replace(/'/g, '"'));
-        document.getElementById("mbti-celebs").textContent =
-          celebList.join(", ");
-        document.getElementById(
-          "mbti-strengths"
-        ).textContent = `${match["Strengths and Weaknesses"]}...`;
-        document.getElementById(
-          "mbti-careers"
-        ).textContent = `${match["Career Paths"]}...`;
-        document.getElementById(
-          "mbti-relationships"
-        ).textContent = `${match["Romantic Relationships"]}...`;
+      function getMBTI(values) {
+        return [
+          values.ei < 0.5 ? "E" : "I",
+          values.sn < 0.5 ? "S" : "N",
+          values.tf < 0.5 ? "T" : "F",
+          values.jp < 0.5 ? "J" : "P",
+        ].join("");
       }
 
-      drawRadar(values);
-    }
+      function updateMBTIProfile(data) {
+        const values = {
+          ei: parseFloat(sliders.ei.value),
+          sn: parseFloat(sliders.sn.value),
+          tf: parseFloat(sliders.tf.value),
+          jp: parseFloat(sliders.jp.value),
+        };
 
-    function drawRadar(values) {
-      const data = [
-        { axis: "E", value: 1 - values.ei },
-        { axis: "I", value: values.ei },
-        { axis: "S", value: 1 - values.sn },
-        { axis: "N", value: values.sn },
-        { axis: "T", value: 1 - values.tf },
-        { axis: "F", value: values.tf },
-        { axis: "J", value: 1 - values.jp },
-        { axis: "P", value: values.jp },
-      ];
+        sliderVals.ei.textContent = `${Math.round(values.ei * 100)}%`;
+        sliderVals.sn.textContent = `${Math.round(values.sn * 100)}%`;
+        sliderVals.tf.textContent = `${Math.round(values.tf * 100)}%`;
+        sliderVals.jp.textContent = `${Math.round(values.jp * 100)}%`;
 
-      const width = 400,
-        height = 400;
-      const radius = Math.min(width, height) / 2 - 40;
-      const angleSlice = (Math.PI * 2) / data.length;
-      const radialScale = d3.scaleLinear().domain([0, 1]).range([0, radius]);
+        const type = getMBTI(values);
+        mbtiOutput.textContent = type;
 
-      d3.select("#radar-chart").selectAll("svg").remove();
-      const svg = d3
-        .select("#radar-chart")
-        .append("svg")
-        .attr("width", width)
-        .attr("height", height)
-        .append("g")
-        .attr("transform", `translate(${width / 2}, ${height / 2})`);
+        const match = data.find((d) => d.Type === type);
+        if (match) {
+          document.getElementById(
+            "mbti-title"
+          ).textContent = `${match.Nickname} (${match.Type})`;
+          document.getElementById("mbti-description").textContent =
+            match.Description;
+          const celebList = JSON.parse(match.Celebrities.replace(/'/g, '"'));
+          document.getElementById("mbti-celebs").textContent =
+            celebList.join(", ");
+          document.getElementById(
+            "mbti-strengths"
+          ).textContent = `${match["Strengths and Weaknesses"]}...`;
+          document.getElementById(
+            "mbti-careers"
+          ).textContent = `${match["Career Paths"]}...`;
+          document.getElementById(
+            "mbti-relationships"
+          ).textContent = `${match["Romantic Relationships"]}...`;
+        }
 
-      svg
-        .selectAll(".axis")
-        .data(data)
-        .join("line")
-        .attr("x1", 0)
-        .attr("y1", 0)
-        .attr(
-          "x2",
-          (d, i) => radialScale(1) * Math.cos(angleSlice * i - Math.PI / 2)
-        )
-        .attr(
-          "y2",
-          (d, i) => radialScale(1) * Math.sin(angleSlice * i - Math.PI / 2)
-        )
-        .attr("stroke", "#ccc");
+        drawRadar(values);
+      }
 
-      svg
-        .selectAll(".label")
-        .data(data)
-        .join("text")
-        .attr(
-          "x",
-          (d, i) => radialScale(1.1) * Math.cos(angleSlice * i - Math.PI / 2)
-        )
-        .attr(
-          "y",
-          (d, i) => radialScale(1.1) * Math.sin(angleSlice * i - Math.PI / 2)
-        )
-        .attr("text-anchor", "middle")
-        .attr("font-size", "11px")
-        .text((d) => d.axis);
+      function drawRadar(values) {
+        const data = [
+          { axis: "E", value: 1 - values.ei },
+          { axis: "I", value: values.ei },
+          { axis: "S", value: 1 - values.sn },
+          { axis: "N", value: values.sn },
+          { axis: "T", value: 1 - values.tf },
+          { axis: "F", value: values.tf },
+          { axis: "J", value: 1 - values.jp },
+          { axis: "P", value: values.jp },
+        ];
 
-      const line = d3
-        .lineRadial()
-        .radius((d) => radialScale(d.value))
-        .angle((d, i) => i * angleSlice)
-        .curve(d3.curveLinearClosed);
+        const width = 400,
+          height = 400;
+        const radius = Math.min(width, height) / 2 - 40;
+        const angleSlice = (Math.PI * 2) / data.length;
+        const radialScale = d3.scaleLinear().domain([0, 1]).range([0, radius]);
 
-      svg
-        .append("path")
-        .datum(data)
-        .attr("d", line)
-        .attr("fill", "steelblue")
-        .attr("fill-opacity", 0.25)
-        .attr("stroke", "steelblue")
-        .attr("stroke-width", 2);
-    }
+        d3.select("#radar-chart").selectAll("svg").remove();
+        const svg = d3
+          .select("#radar-chart")
+          .append("svg")
+          .attr("width", width)
+          .attr("height", height)
+          .append("g")
+          .attr("transform", `translate(${width / 2}, ${height / 2})`);
 
-    d3.csv("types.csv").then((data) => {
-      Object.values(sliders).forEach((slider) => {
-        slider.addEventListener("input", () => updateMBTIProfile(data));
+        svg
+          .selectAll(".axis")
+          .data(data)
+          .join("line")
+          .attr("x1", 0)
+          .attr("y1", 0)
+          .attr(
+            "x2",
+            (d, i) => radialScale(1) * Math.cos(angleSlice * i - Math.PI / 2)
+          )
+          .attr(
+            "y2",
+            (d, i) => radialScale(1) * Math.sin(angleSlice * i - Math.PI / 2)
+          )
+          .attr("stroke", "#ccc");
+
+        svg
+          .selectAll(".label")
+          .data(data)
+          .join("text")
+          .attr(
+            "x",
+            (d, i) => radialScale(1.1) * Math.cos(angleSlice * i - Math.PI / 2)
+          )
+          .attr(
+            "y",
+            (d, i) => radialScale(1.1) * Math.sin(angleSlice * i - Math.PI / 2)
+          )
+          .attr("text-anchor", "middle")
+          .attr("font-size", "11px")
+          .text((d) => d.axis);
+
+        const line = d3
+          .lineRadial()
+          .radius((d) => radialScale(d.value))
+          .angle((d, i) => i * angleSlice)
+          .curve(d3.curveLinearClosed);
+
+        svg
+          .append("path")
+          .datum(data)
+          .attr("d", line)
+          .attr("fill", "steelblue")
+          .attr("fill-opacity", 0.25)
+          .attr("stroke", "steelblue")
+          .attr("stroke-width", 2);
+      }
+
+      d3.csv("types.csv").then((data) => {
+        Object.values(sliders).forEach((slider) => {
+          slider.addEventListener("input", () => updateMBTIProfile(data));
+        });
+        updateMBTIProfile(data);
       });
-      updateMBTIProfile(data);
-    });
 
-    // https://appliednetsci.springeropen.com/articles/10.1007/s41109-019-0117-4/tables/4
+      // https://appliednetsci.springeropen.com/articles/10.1007/s41109-019-0117-4/tables/4
 
-    // team builder
-    const mbtiRoles = {
-      ESTP: "Doer",
-      ISFP: "Mediator",
-      ISTP: "Problem Solver",
-      ESFP: "Entertainer",
-      ESTJ: "Organizer",
-      ESFJ: "Supporter",
-      ISTJ: "Inspector",
-      ISFJ: "Protector",
-      ENFJ: "Coach",
-      INFJ: "Advisor",
-      ENFP: "Campaigner",
-      INFP: "Idealist",
-      ENTJ: "Commander",
-      INTJ: "Strategist",
-      ENTP: "Visionary",
-      INTP: "Thinker",
-    };
+      // team builder
+      const mbtiRoles = {
+        ESTP: "Doer",
+        ISFP: "Mediator",
+        ISTP: "Problem Solver",
+        ESFP: "Entertainer",
+        ESTJ: "Organizer",
+        ESFJ: "Supporter",
+        ISTJ: "Inspector",
+        ISFJ: "Protector",
+        ENFJ: "Coach",
+        INFJ: "Advisor",
+        ENFP: "Campaigner",
+        INFP: "Idealist",
+        ENTJ: "Commander",
+        INTJ: "Strategist",
+        ENTP: "Visionary",
+        INTP: "Thinker",
+      };
 
     // const teamSize = 5;
     const compatibility = {}; // filled from CSV
     const team = [];
 
-    // Load compatibility data
-    d3.csv("mbti_compatibility_matrix.csv").then((data) => {
-      data.forEach((row) => {
-        const type = row[""];
-        compatibility[type] = {};
-        Object.entries(row).forEach(([key, val]) => {
-          if (key !== "") compatibility[type][key] = +val;
-        });
-      });
-
-      initTeamBuilder();
-      populateMatchDropdowns();
-    });
-
-    function initTeamBuilder() {
-      const pool = d3.select("#mbti-types");
-      const slots = [0, 1, 2, 3, 4];
-
-      Object.keys(mbtiRoles).forEach((type) => {
-        pool
-          .append("div")
-          .attr("class", "card")
-          .attr("draggable", true)
-          .attr("data-type", type)
-          .style("cursor", "grab")
-          .style("padding", "6px 10px")
-          .text(type)
-          .on("dragstart", (event) => {
-            event.dataTransfer.setData("text/plain", type);
+      // Load compatibility data
+      d3.csv("mbti_compatibility_matrix.csv").then((data) => {
+        data.forEach((row) => {
+          const type = row[""];
+          compatibility[type] = {};
+          Object.entries(row).forEach(([key, val]) => {
+            if (key !== "") compatibility[type][key] = +val;
           });
+        });
+
+        initTeamBuilder();
+        populateMatchDropdowns();
       });
+
+      function initTeamBuilder() {
+        const pool = d3.select("#mbti-types");
+        const slots = [0, 1, 2, 3, 4];
+
+        Object.keys(mbtiRoles).forEach((type) => {
+          pool
+            .append("div")
+            .attr("class", "card")
+            .attr("draggable", true)
+            .attr("data-type", type)
+            .style("cursor", "grab")
+            .style("padding", "6px 10px")
+            .text(type)
+            .on("dragstart", (event) => {
+              event.dataTransfer.setData("text/plain", type);
+            });
+        });
 
       const center = document.getElementById("center-score");
       center.addEventListener("dragover", (e) => e.preventDefault());
@@ -930,79 +966,79 @@
       });
     }
 
-    function analyzeTeam() {
-      const filled = team.filter((t) => t);
-      if (filled.length < 2) {
-        document.getElementById("center-score").textContent = "Score";
-        return;
-      }
+      function analyzeTeam() {
+        const filled = team.filter((t) => t);
+        if (filled.length < 2) {
+          document.getElementById("center-score").textContent = "Score";
+          return;
+        }
 
-      let score = 0,
-        pairs = 0;
-      for (let i = 0; i < filled.length; i++) {
-        for (let j = i + 1; j < filled.length; j++) {
-          const a = filled[i];
-          const b = filled[j];
-          if (compatibility[a] && compatibility[a][b] !== undefined) {
-            score += compatibility[a][b];
-            pairs++;
+        let score = 0,
+          pairs = 0;
+        for (let i = 0; i < filled.length; i++) {
+          for (let j = i + 1; j < filled.length; j++) {
+            const a = filled[i];
+            const b = filled[j];
+            if (compatibility[a] && compatibility[a][b] !== undefined) {
+              score += compatibility[a][b];
+              pairs++;
+            }
           }
         }
+
+        const avg = (score / pairs).toFixed(2);
+        const roles = filled.map((type) => mbtiRoles[type]).join(", ");
+        const center = document.getElementById("center-score");
+        center.innerHTML = `<div>Avg: ${avg}</div><div style='font-size: 12px;'>${roles}</div>`;
       }
 
-      const avg = (score / pairs).toFixed(2);
-      const roles = filled.map((type) => mbtiRoles[type]).join(", ");
-      const center = document.getElementById("center-score");
-      center.innerHTML = `<div>Avg: ${avg}</div><div style='font-size: 12px;'>${roles}</div>`;
-    }
+      function populateMatchDropdowns() {
+        const selectA = d3.select("#match-type-a");
+        const selectB = d3.select("#match-type-b");
 
-    function populateMatchDropdowns() {
-      const selectA = d3.select("#match-type-a");
-      const selectB = d3.select("#match-type-b");
-
-      mbtiTypes.forEach((type) => {
-        selectA.append("option").text(type).attr("value", type);
-        selectB.append("option").text(type).attr("value", type);
-      });
-    }
-
-    document.querySelectorAll(".tab").forEach((tab) => {
-      tab.addEventListener("click", () => {
-        // Deactivate all
-        document
-          .querySelectorAll(".tab")
-          .forEach((t) => t.classList.remove("active"));
-        document
-          .querySelectorAll(".content")
-          .forEach((c) => c.classList.remove("active"));
-
-        // Activate selected
-        tab.classList.add("active");
-        const target = tab.getAttribute("data-target");
-        document.getElementById(target).classList.add("active");
-      });
-    });
-
-    function matchMBTITypes() {
-      const a = document.getElementById("match-type-a").value;
-      const b = document.getElementById("match-type-b").value;
-
-      if (!a || !b) return;
-
-      const score = compatibility[a]?.[b];
-      let message = "";
-
-      if (score >= 0.8) {
-        message =
-          "🔥 These types are highly compatible. They balance each other well.";
-      } else if (score >= 0.6) {
-        message = "😊 Generally a good match with strong potential.";
-      } else if (score >= 0.4) {
-        message = "😐 Some differences — could work with communication.";
-      } else {
-        message =
-          "⚠️ Very different types. Conflict is likely unless both grow together.";
+        mbtiTypes.forEach((type) => {
+          selectA.append("option").text(type).attr("value", type);
+          selectB.append("option").text(type).attr("value", type);
+        });
       }
+
+      document.querySelectorAll(".tab").forEach((tab) => {
+        tab.addEventListener("click", () => {
+          // Deactivate all
+          document
+            .querySelectorAll(".tab")
+            .forEach((t) => t.classList.remove("active"));
+          document
+            .querySelectorAll(".content")
+            .forEach((c) => c.classList.remove("active"));
+
+          // Activate selected
+          tab.classList.add("active");
+          const target = tab.getAttribute("data-target");
+          document.getElementById(target).classList.add("active");
+        });
+      });
+
+      function matchMBTITypes() {
+        const a = document.getElementById("match-type-a").value;
+        const b = document.getElementById("match-type-b").value;
+
+        if (!a || !b) return;
+
+        const score = compatibility[a]?.[b];
+        let message = "";
+
+        if (score >= 0.8) {
+          message =
+            "🔥 These types are highly compatible. They balance each other well.";
+        } else if (score >= 0.6) {
+          message = "😊 Generally a good match with strong potential.";
+        } else if (score >= 0.4) {
+          message = "😐 Some differences — could work with communication.";
+        } else {
+          message =
+            "⚠️ Very different types. Conflict is likely unless both grow together.";
+        }
 
       d3.select("#match-result").html(`
         <strong>${a} ❤️ ${b}</strong><br/>
